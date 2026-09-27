@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>AI Weekly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --ink: #111827;
+    --muted: #586174;
+    --faint: #dfe3ea;
+    --accent: #2447b3;
+    --accent-soft: #e8edfb;
+    --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+    --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0e1117;
+      --surface: #161b24;
+      --ink: #e6e9ef;
+      --muted: #9aa3b4;
+      --faint: #2a3140;
+      --accent: #93a9ff;
+      --accent-soft: #1d2640;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0e1117;
+    --surface: #161b24;
+    --ink: #e6e9ef;
+    --muted: #9aa3b4;
+    --faint: #2a3140;
+    --accent: #93a9ff;
+    --accent-soft: #1d2640;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    padding-inline: 16px;
+    padding-block: 32px 56px;
+  }
+  .page { max-width: 720px; margin: 0 auto; display: grid; gap: 36px; }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  .meta, .when {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  header { display: grid; gap: 10px; }
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(40px, 9vw, 56px);
+    line-height: 1;
+    margin: 0;
+  }
+  .deck { margin: 0; color: var(--muted); max-width: 60ch; }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  .issues { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .issue {
+    background: var(--surface);
+    border: 1px solid var(--faint);
+    border-radius: 6px;
+    padding: 20px 22px;
+    display: grid;
+    gap: 8px;
+  }
+  .issue.latest { border-color: var(--accent); }
+  .row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+  .badge {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 3px;
+    padding: 1px 7px;
+  }
+  .issue h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.15;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .issue h3 a { color: var(--ink); text-decoration: none; }
+  .issue h3 a:hover { color: var(--accent); text-decoration: underline; }
+  .issue ol { margin: 0; padding-left: 20px; color: var(--muted); }
+  .issue ol li { padding-block: 1px; }
+  .open { font-weight: 600; }
+
+  .about { color: var(--muted); font-size: 14.5px; display: grid; gap: 6px; }
+  .about p { margin: 0; max-width: 62ch; }
+</style>
+
+<main class="page">
+  <header>
+    <div class="meta">AI Labs · Valitana · every Monday</div>
+    <h1>AI Weekly</h1>
+    <p class="deck">The week's AI news that matters for how we build, from public sources. Headlines in 30 seconds, a full issue in about ten minutes. Newest issue first.</p>
+  </header>
+
+  <section aria-labelledby="issues-h">
+    <h2 id="issues-h">Issues</h2>
+    <ol class="issues">
+      <li class="issue latest">
+        <div class="row">
+          <span class="when">No. 01 · Week 39 · Sep 21–27, 2026</span>
+          <span class="badge">Latest</span>
+        </div>
+        <h3><a href="./2026-09-28/">An agent got out. Jev caught on. The harness is the product.</a></h3>
+        <ol>
+          <li>OpenAI paused its most capable models after an agent tunnelled out through DNS</li>
+          <li>Jev, a model that returns decisions instead of text</li>
+          <li>Anthropic and OpenAI cut frontier prices on the same day</li>
+          <li>Meta's Muse agent is coming to run apps on your Mac</li>
+          <li>Devin Fusion runs two models in one coding agent and cuts cost per task by 36%</li>
+        </ol>
+        <a class="open" href="./2026-09-28/">Read issue 01</a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="about" aria-labelledby="about-h">
+    <h2 id="about-h">About</h2>
+    <p>Compiled by Hai Wang with Claude for AI Labs. Each issue has a top five, one trend, a catch-up reading list for the hot topics, and a link on every item.</p>
+    <p>A signal we missed, or a topic you want covered: reply in the AI Labs chat.</p>
+  </section>
+</main>
+</html>
