@@ -346,7 +346,7 @@
       <span>Week 42 · Oct 12 – 18, 2026</span>
     </div>
     <h1>Agents outgrew Git. Open weights got real. Coding tools became the target.</h1>
-    <p class="deck">The headlines take 30 seconds, the top five about five minutes, the whole page about eleven. Every item links to its source.</p>
+    <p class="deck">The headlines take 30 seconds, the top five about three minutes, the whole page about nine. Every item links to its source.</p>
     <div class="brands" aria-label="Sources this week">
       <span class="brand"><span class="logo b-anthropic sm" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>Anthropic</span>
       <span class="brand"><span class="logo b-gemini sm" aria-hidden="true"><svg><use href="#gemini"/></svg></span>Google</span>
@@ -374,8 +374,8 @@
             <span class="pill"><svg aria-hidden="true"><use href="#i-terminal"/></svg>Dev tools</span>
           </div>
           <h3>Anthropic replaced Git and rebuilt code review because agents merge 30,000 changes a day</h3>
-          <p>Merges to Anthropic's monorepo went from about 2,500 a day in May to over 30,000 in September. A team of seven built Scion (source control) and Antique (code review) in five months, with Claude writing most of the code. Scion assumes "clients are always online", serves about 25 million CI checkouts a day at over 99% cache hits per tier, and runs on a footprint 200x smaller than the old Git mirrors. Two days later the Claude Code team published how it reviews code that Claude writes (about 90% of it): the change, not the author, sets the risk tier; an agent's approval never counts as a person's; and reviews stop after three rounds, because one PR went through more than fifty rounds overnight and 59% of the repeat flags were on code that had been there since the first pass. With the cap, PRs passing after one round went from 65% to 78%. The skeptic note: Rain, who worked on Meta's Mononoke, says Scion's design follows Mononoke without credit; Anthropic's post, updated Oct 15, now names it.</p>
-          <p class="forus"><b>For us:</b> the week's developer deep item. Copy four things from the checklist: a <code>REVIEW.md</code> per repo, risk tiers set by the change, a round cap, and past incidents as the reviewer's eval set. Then ask where our CI assumes human-rate commits. Catch-up list below.</p>
+          <p>Merges to Anthropic's monorepo went from about 2,500 a day in May to over 30,000 in September, so a team of seven replaced Git with Scion in five months. The Claude Code team's review rules: the change sets the risk tier, an agent's approval never counts as a person's, and review stops after three rounds. The skeptic view: Rain, who worked on Meta's Mononoke, says Scion copies it without credit.</p>
+          <p class="forus"><b>For us:</b> the week's developer deep item. Copy the checklist: a <code>REVIEW.md</code> per repo, risk tiers, a round cap, and past incidents as evals. Catch-up list below.</p>
           <div class="src"><a href="https://www.anthropic.com/engineering/redesigning-source-control">Anthropic: redesigning source control</a> · <a href="https://claude.dev/blog/solving-code-review-at-anthropic/">How the Claude Code team does code review</a> · <a href="https://sunshowers.io/posts/anthropic-mononoke/">Rain on Mononoke</a></div>
         </div>
       </li>
@@ -387,8 +387,8 @@
             <span class="pill"><svg aria-hidden="true"><use href="#i-cpu"/></svg>Models</span>
           </div>
           <h3>Gemini 4 Argon is in the API at an introductory price that doubles on Dec 1</h3>
-          <p><code>gemini-4-argon</code> went GA on Oct 13 at $2 per million input tokens and $10 output, cached input 95% less, rising to $4 and $20 after the introductory period (Simon Willison: Dec 1). Output limit goes from 64K to 1M tokens. Google reports DeepSWE v1.1 77.9% and AutomationBench 51.3%, and says Argon leads Vals Finance Agent v2 and Harvey's legal benchmark, without giving scores. Third parties, via AINews: Artificial Analysis puts it level with GPT-6 Astra at about 60% of Astra's cost per task; Theo measured a false-claim rate above 50% on his codebase-analysis benchmark.</p>
-          <p class="forus"><b>For us:</b> the finance-agent claim has no number behind it, so it is ours to test. Run a bake-off on our own wealth-data tasks before Dec 1, while it costs half. Catch-up list below.</p>
+          <p><code>gemini-4-argon</code> went GA on Oct 13 at $2 / $10 per million tokens, doubling to $4 / $20 on Dec 1, with a 1M-token output limit. Google says it leads a finance-agent benchmark but gives no score. Independent results are mixed: Theo measured a false-claim rate above 50% on his codebase benchmark.</p>
+          <p class="forus"><b>For us:</b> the finance claim is ours to test. Run a bake-off on our wealth-data tasks before Dec 1, at half price. Catch-up list below.</p>
           <div class="src"><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/">Google: Gemini 4 Argon</a> · <a href="https://ai.google.dev/gemini-api/docs/changelog">Gemini API changelog</a> · <a href="https://simonwillison.net/2026/Oct/13/llm-gemini/">Willison</a></div>
         </div>
       </li>
@@ -400,8 +400,8 @@
             <span class="pill"><svg aria-hidden="true"><use href="#i-cpu"/></svg>Models</span>
           </div>
           <h3>Three frontier-size open-weight models ship in three days, under three very different licences</h3>
-          <p>Update on W41: Reflection's Beam weights are out under Apache 2.0. 501B parameters with 23B active, 1M context, in BF16, FP8 and NVFP4 with a speculative-decoding drafter; SWE-bench Verified 81.6% on Reflection's own card, technical report "coming". Meta's Muse Spark Open (816B, 42B active, text, image, video and audio in) comes under the Muse Model License: products must show "Built with Muse Spark Open", and a licensee with over $20M revenue needs a separate deal to offer it as a service; it needs at least 700 GB of GPU memory. DeepSeek V4.1 Flash 1017 is MIT, 763B, with Terminal-Bench 4.0 up from 31.2 to 42.3 (Opus 5: 51.8), and DeepSeek put a Harness for agent builders in developer preview. Mistral Large 4's weights, promised by the end of October, are still not out.</p>
-          <p class="forus"><b>For us:</b> Beam is the first with a clean licence for a self-hosted tier, where client data never leaves the VPC. Muse's branding clause rules it out for anything we resell. The catch is hardware: hundreds of gigabytes of GPU memory for each.</p>
+          <p>Reflection's Beam (501B, Apache 2.0) shipped its weights, as promised in W41. Meta's Muse Spark Open (816B) requires a "Built with Muse Spark Open" label, and a separate deal for licensees above $20M revenue. DeepSeek V4.1 Flash 1017 is MIT. Mistral Large 4's weights are still not out.</p>
+          <p class="forus"><b>For us:</b> Beam is the first with a clean licence for a self-hosted tier where client data stays in our VPC. Each needs hundreds of gigabytes of GPU memory.</p>
           <div class="src"><a href="https://reflection.ai/blog/beam-is-available">Reflection: Beam is available</a> · <a href="https://huggingface.co/reflection/Beam-1.0-501B-A23B">Beam model card</a> · <a href="https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B">Muse Spark Open card</a> · <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017">DeepSeek card</a></div>
         </div>
       </li>
@@ -413,8 +413,8 @@
             <span class="pill"><svg aria-hidden="true"><use href="#i-nodes"/></svg>Agents</span>
           </div>
           <h3>The Claude API and Managed Agents now emit OpenTelemetry traces, and Claude Code changed defaults under your scripts</h3>
-          <p>OpenTelemetry export, in beta, traces Messages API requests, tool uses and Managed Agents sessions into Datadog, Grafana, Langfuse or any OTLP backend. The SDKs emit spans in Python, TypeScript, C#, Go, Java, PHP and Ruby; API-side spans need an admin to add a destination in the Console. Spans carry metadata only by default; prompts and responses are opt-in. Delivery is best effort, so the Usage API stays the record for spend. Claude Code 2.1.299 to 2.1.302: fork subagents are now on by default in <code>claude -p</code>, the Agent SDK, desktop and VS Code (<code>CLAUDE_CODE_FORK_SUBAGENT=0</code> turns them off); conversations over 200K tokens idle for about 54 minutes get compacted (<code>"idleCompaction": false</code>); <code>tool_decision</code> events now say whether a classifier or a rule decided; <code>--sandbox</code> on <code>claude remote-control</code> is now an error. Same week: Opus 5.5 fast mode left research preview and no longer needs a beta header.</p>
-          <p class="forus"><b>For us:</b> one trace from our harness through the API, without our own logging code. Keep it on metadata only until we decide where prompt content may be stored. Check every scheduled <code>claude -p</code> job before fork subagents change what it does.</p>
+          <p>OpenTelemetry export (beta) sends Messages API and Managed Agents traces to Datadog, Grafana, Langfuse or any OTLP backend, metadata only by default. Claude Code 2.1.302 turns fork subagents on by default in <code>claude -p</code> and the Agent SDK; <code>CLAUDE_CODE_FORK_SUBAGENT=0</code> turns them off.</p>
+          <p class="forus"><b>For us:</b> one trace across our harness and the API, with no logging code of our own. Check scheduled <code>claude -p</code> jobs before the new default changes them.</p>
           <div class="src"><a href="https://platform.claude.com/docs/en/manage-claude/opentelemetry">OpenTelemetry for the Claude API</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">Release notes, Oct 14 and 15</a> · <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></div>
         </div>
       </li>
@@ -426,8 +426,8 @@
             <span class="pill sec"><svg aria-hidden="true"><use href="#i-shield"/></svg>Security</span>
           </div>
           <h3>Coding-agent tools became the target: OpenCode lost users' AI keys, and Codex runs a self-updating daemon</h3>
-          <p>OpenCode found unauthorised access to a legacy system it was retiring and told users that "third party provider keys (eg OpenAI, Anthropic) saved in your workspace may have been exposed". About 1.4% of users of its hosted Console were affected, not the local CLI; users report unauthorised charges and were told to revoke and replace their keys. News report of OpenCode's post and email; no written incident report yet. Separately, a GitHub issue open since Sep 25, and argued over this week, shows that since Codex CLI 0.157.0 an interactive session starts a background server that outlives every window, copies about 374 MB, and runs an hourly self-updater that can interrupt a turn. No OpenAI reply on the issue yet; users report <code>codex features disable daemon_auto_start</code> turns it off.</p>
-          <p class="forus"><b>For us:</b> keep provider keys out of hosted dashboards: one key per tool, a spending cap on each, and rotation. List what each coding agent we approve installs, keeps running and updates on a developer machine.</p>
+          <p>OpenCode says provider keys saved in its hosted Console "may have been exposed" for about 1.4% of users, who report unauthorised charges. A GitHub issue shows that since 0.157.0 Codex CLI leaves a self-updating background server running after every window closes; OpenAI has not replied.</p>
+          <p class="forus"><b>For us:</b> one key per tool, each with a spending cap, kept out of hosted dashboards. List what each coding agent we approve installs and keeps running.</p>
           <div class="src"><a href="https://officechai.com/ai/opencode-discloses-security-breach-says-attackers-may-have-accessed-users-openai-anthropic-and-google-api-keys/">OfficeChai: OpenCode breach</a> · <a href="https://github.com/openai/codex/issues/48195">Codex issue #48195</a></div>
         </div>
       </li>
