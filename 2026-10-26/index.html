@@ -364,6 +364,7 @@
       <span class="brand"><span class="logo b-deepseek sm" aria-hidden="true"><span class="mono-mark">D</span></span>DeepSeek</span>
       <span class="brand"><span class="logo b-mistral sm" aria-hidden="true"><span class="mono-mark">M</span></span>Mistral</span>
       <span class="brand"><span class="logo b-sp sm" aria-hidden="true"><span class="mono-mark">S</span></span>S&amp;P Global</span>
+      <span class="brand"><span class="logo b-security sm" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>Wiz</span>
       <span class="brand"><span class="logo b-hn sm" aria-hidden="true"><span class="mono-mark">Y</span></span>Hacker News</span>
       <span class="brand"><span class="logo b-mic sm" aria-hidden="true"><svg><use href="#i-mic"/></svg></span>Latent Space, All-In</span>
     </div>
@@ -519,6 +520,13 @@
         <div class="src"><a href="https://github.com/NVIDIA/OpenShell">NVIDIA/OpenShell</a></div>
       </li>
       <li>
+        <span class="logo b-security" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>
+        <span class="date">2026-10-21 · Wiz found a decade-old PHP remote code execution with Gemini 4 Argon and GPT-5.6 Sol</span>
+        <p>CVE-2026-109618 and CVE-2026-109619, CVSS 9.2: memory-safety bugs in how PHP's engine handles fatal errors, giving unauthenticated remote code execution on stock Drupal, WordPress and Joomla. Affected code goes back to PHP 5.4. Wiz: "We used Wiz Atlas, Gemini 4 Argon and GPT-5.6 Sol throughout this research." Patches shipped Oct 21; a leaked proof-of-concept video sped up exploit work.</p>
+        <p class="forus"><b>For us:</b> models now find and weaponise old bugs in the software under everyone's stack; patch PHP anywhere it runs, and expect the same against our own code, so the audit skill above is a defensive move too.</p>
+        <div class="src"><a href="https://www.wiz.io/blog/php2shell-php-rce">Wiz Research: PHP2Shell</a> · <a href="https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/">PHP Foundation</a> · <a href="https://simonwillison.net/2026/Oct/21/">Willison</a></div>
+      </li>
+      <li>
         <span class="logo b-amp" aria-hidden="true"><span class="mono-mark">A</span></span>
         <span class="date">2026-10-21 to 10-23 · Amp self-hosted orbs, and framework releases</span>
         <p>Amp's cloud agents can run in your own sandboxes: <code>amp orb provider ./dispatch.sh</code> receives spawn, pause and delete requests, with examples for Docker, Kubernetes, Modal and E2B. Google ADK 2.13 moves to OTel GenAI v2 spans; Mastra 1.79 adds MCP Events, a vendor extension; langchain-core 1.7 streams tool-call arguments as deltas.</p>
@@ -615,6 +623,8 @@
       <li><a href="https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams">GitHub: Copilot model policy API</a></li>
       <li><a href="https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode">GitHub: usage metrics by client</a></li>
       <li><a href="https://github.com/NVIDIA/OpenShell">NVIDIA/OpenShell</a></li>
+      <li><a href="https://www.wiz.io/blog/php2shell-php-rce">Wiz Research: PHP2Shell</a></li>
+      <li><a href="https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/">PHP Foundation: today's PHP security release</a></li>
       <li><a href="https://ampcode.com/news/self-hosted-orbs">Amp: self-hosted orbs</a></li>
       <li><a href="https://github.com/google/adk-python/releases">Google ADK Python releases</a></li>
       <li><a href="https://github.com/mastra-ai/mastra/releases">Mastra releases</a></li>
