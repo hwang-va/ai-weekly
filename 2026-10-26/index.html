@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>AI Weekly W43</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --ink: #111827;
+    --muted: #586174;
+    --faint: #dfe3ea;
+    --accent: #2447b3;
+    --accent-soft: #e8edfb;
+    --forus: #0f5f4a;
+    --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+    --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0e1117;
+      --surface: #161b24;
+      --ink: #e6e9ef;
+      --muted: #9aa3b4;
+      --faint: #2a3140;
+      --accent: #93a9ff;
+      --accent-soft: #1d2640;
+      --forus: #6fd3b3;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0e1117;
+    --surface: #161b24;
+    --ink: #e6e9ef;
+    --muted: #9aa3b4;
+    --faint: #2a3140;
+    --accent: #93a9ff;
+    --accent-soft: #1d2640;
+    --forus: #6fd3b3;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    padding-inline: 16px;
+    padding-block: 32px 56px;
+  }
+  .page { max-width: 720px; margin: 0 auto; display: grid; gap: 40px; }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  code { font-family: var(--mono); font-size: 0.92em; }
+
+  .meta, .date, .src {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+  }
+
+  /* Masthead */
+  header { display: grid; gap: 10px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(34px, 7vw, 46px);
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .deck { margin: 0; color: var(--muted); max-width: 60ch; }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  /* Top section */
+  .top {
+    background: var(--surface);
+    border: 1px solid var(--faint);
+    border-radius: 6px;
+    padding: 22px 22px 8px;
+  }
+  .top ol { list-style: none; margin: 0; padding: 0; counter-reset: rank; }
+  .top li {
+    counter-increment: rank;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 0 12px;
+    padding-block: 14px;
+    border-top: 1px solid var(--faint);
+  }
+  .top li:first-child { border-top: 0; padding-top: 0; }
+  .top li::before {
+    content: counter(rank);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--accent);
+  }
+  .top h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.2;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .top p { margin: 0 0 6px; max-width: 65ch; }
+
+  .forus { color: var(--forus); font-weight: 500; }
+  .forus b { font-weight: 600; }
+
+  .src { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 2px; }
+
+  /* Trend */
+  .trend p { margin: 0 0 12px; max-width: 65ch; }
+  .trend .claim {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.2;
+    text-wrap: balance;
+    margin-bottom: 12px;
+  }
+  .term { background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; }
+
+  /* Details */
+  .group { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .group + .group { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--faint); }
+  .group li { display: grid; gap: 4px; }
+  .group p { margin: 0; max-width: 65ch; }
+  .recap { font-style: italic; }
+
+  .deep {
+    background: var(--surface);
+    border: 1px solid var(--faint);
+    border-radius: 6px;
+    padding: 22px;
+    display: grid;
+    gap: 10px;
+    scroll-margin-top: 16px;
+  }
+  .deep h2 { margin: 0; }
+  .deep p { margin: 0; max-width: 65ch; }
+  .reading { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 14px; }
+  .reading li {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 2px 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--faint);
+  }
+  .reading .step {
+    grid-row: span 2;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+  .reading a { font-weight: 500; }
+  .reading .why { font-size: 14.5px; color: var(--muted); }
+  @media (max-width: 480px) {
+    .deep { padding: 18px 16px; }
+    .reading li { grid-template-columns: 1fr; }
+    .reading .step { grid-row: auto; }
+  }
+
+  .ahead {
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 16px 18px;
+    display: grid;
+    gap: 4px;
+  }
+  .ahead p { margin: 0; }
+
+  /* Sources */
+  details { border-top: 1px solid var(--faint); padding-top: 14px; }
+  summary {
+    cursor: pointer;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  details ul { margin: 12px 0 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14.5px; }
+
+  footer { font-size: 13.5px; color: var(--muted); }
+  footer p { margin: 0; }
+
+  @media (max-width: 480px) {
+    .top { padding: 18px 16px 4px; }
+    .top li { grid-template-columns: 22px 1fr; gap: 0 10px; }
+    .top h3 { font-size: 19px; }
+    .trend .claim { font-size: 22px; }
+  }
+
+  /* Vivid layer: brand tiles mark each source, pills mark the topic, icons mark reading steps */
+  :root { --tile-ring: rgba(17, 24, 39, 0.08); --pill-bg: #eef1f6; --sec: #b42318; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --tile-ring: rgba(255, 255, 255, 0.16); --pill-bg: #1e2532; --sec: #ff8a7a; }
+  }
+  :root[data-theme="dark"] { --tile-ring: rgba(255, 255, 255, 0.16); --pill-bg: #1e2532; --sec: #ff8a7a; }
+
+  .logo {
+    width: 30px; height: 30px; flex: none;
+    border-radius: 8px;
+    display: inline-grid; place-items: center;
+    box-shadow: inset 0 0 0 1px var(--tile-ring);
+  }
+  .logo svg { width: 17px; height: 17px; fill: currentColor; }
+  .logo.sm { width: 22px; height: 22px; border-radius: 6px; }
+  .logo.sm svg { width: 13px; height: 13px; }
+  .logo.lg { width: 40px; height: 40px; border-radius: 10px; }
+  .logo.lg svg { width: 22px; height: 22px; }
+  .mono-mark { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1; }
+
+  /* Fixed brand pairs: each background carries its own foreground, so they read in both themes */
+  .b-openai    { background: #0d0d0d; color: #ffffff; }
+  .b-claude    { background: #d97757; color: #ffffff; }
+  .b-anthropic { background: #191919; color: #f0eee6; }
+  .b-gemini    { background: linear-gradient(135deg, #4285f4, #9b72cb 60%, #d96570); color: #ffffff; }
+  .b-github,
+  .b-copilot   { background: #24292f; color: #ffffff; }
+  .b-robinhood { background: #ccff00; color: #0b0b0b; }
+  .b-security  { background: #b42318; color: #ffffff; }
+  .b-bank      { background: #1f4e79; color: #ffffff; }
+  .b-pi        { background: #6d28d9; color: #ffffff; }
+  .b-clip      { background: #475467; color: #ffffff; }
+  .b-loop      { background: #0e7490; color: #ffffff; }
+  .b-mic       { background: #be185d; color: #ffffff; }
+  .b-cal       { background: var(--accent); color: var(--surface); }
+
+  /* In-this-issue strip */
+  .brands { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .brand {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 3px 11px 3px 3px;
+    border: 1px solid var(--faint); border-radius: 999px;
+    background: var(--surface);
+    font-size: 13.5px; font-weight: 500;
+  }
+  .brand .logo { border-radius: 999px; }
+
+  /* Kicker row: logo, who and when, topic */
+  .kicker { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-bottom: 8px; }
+  .kicker .who { font-family: var(--mono); font-size: 12.5px; color: var(--muted); letter-spacing: 0.02em; }
+  .kicker .who b { color: var(--ink); font-weight: 500; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 9px 2px 7px; border-radius: 999px;
+    background: var(--pill-bg); color: var(--muted);
+    font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .pill.sec { color: var(--sec); }
+  .pill svg, .si { width: 14px; height: 14px; flex: none; }
+
+  .deep-head { display: flex; align-items: center; gap: 12px; }
+  .reading .step { display: flex; align-items: flex-start; gap: 6px; }
+  .reading .step .si { margin-top: 1px; }
+  h2 .si { vertical-align: -2px; margin-right: 6px; }
+
+  .group li { grid-template-columns: 30px minmax(0, 1fr); gap: 4px 12px; }
+  .group li > .logo { grid-row: span 4; }
+  .group li > :not(.logo) { grid-column: 2; min-width: 0; }
+
+  .ahead p { display: flex; align-items: flex-start; gap: 10px; }
+  .ahead p .logo { margin-top: 1px; }
+  .ahead p.forus, .ahead .src { padding-left: 32px; }
+  .ahead p.forus { display: block; }
+
+  @media (max-width: 480px) {
+    .group li { grid-template-columns: 26px minmax(0, 1fr); gap: 4px 10px; }
+    .group li > .logo { width: 26px; height: 26px; }
+  }
+  .b-cloudflare { background: #f38020; color: #fff; }
+  .b-mistral { background: #ffd800; color: #111; }
+  .b-hn { background: #ff6600; color: #fff; }
+  .b-wiki { background: #006699; color: #fff; }
+  .b-lc { background: #1c3c3c; color: #fff; }
+  .b-cursor { background: #111; color: #fff; }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="openai" viewBox="0 0 24 24"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></symbol>
+  <symbol id="claude" viewBox="0 0 24 24"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></symbol>
+  <symbol id="anthropic" viewBox="0 0 24 24"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></symbol>
+  <symbol id="gemini" viewBox="0 0 24 24"><path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></symbol>
+  <symbol id="github" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+  <symbol id="copilot" viewBox="0 0 24 24"><path d="M23.922 16.997C23.061 18.492 18.063 22.02 12 22.02 5.937 22.02.939 18.492.078 16.997A.641.641 0 0 1 0 16.741v-2.869a.883.883 0 0 1 .053-.22c.372-.935 1.347-2.292 2.605-2.656.167-.429.414-1.055.644-1.517a10.098 10.098 0 0 1-.052-1.086c0-1.331.282-2.499 1.132-3.368.397-.406.89-.717 1.474-.952C7.255 2.937 9.248 1.98 11.978 1.98c2.731 0 4.767.957 6.166 2.093.584.235 1.077.546 1.474.952.85.869 1.132 2.037 1.132 3.368 0 .368-.014.733-.052 1.086.23.462.477 1.088.644 1.517 1.258.364 2.233 1.721 2.605 2.656a.841.841 0 0 1 .053.22v2.869a.641.641 0 0 1-.078.256Zm-11.75-5.992h-.344a4.359 4.359 0 0 1-.355.508c-.77.947-1.918 1.492-3.508 1.492-1.725 0-2.989-.359-3.782-1.259a2.137 2.137 0 0 1-.085-.104L4 11.746v6.585c1.435.779 4.514 2.179 8 2.179 3.486 0 6.565-1.4 8-2.179v-6.585l-.098-.104s-.033.045-.085.104c-.793.9-2.057 1.259-3.782 1.259-1.59 0-2.738-.545-3.508-1.492a4.359 4.359 0 0 1-.355-.508Zm2.328 3.25c.549 0 1 .451 1 1v2c0 .549-.451 1-1 1-.549 0-1-.451-1-1v-2c0-.549.451-1 1-1Zm-5 0c.549 0 1 .451 1 1v2c0 .549-.451 1-1 1-.549 0-1-.451-1-1v-2c0-.549.451-1 1-1Zm3.313-6.185c.136 1.057.403 1.913.878 2.497.442.544 1.134.938 2.344.938 1.573 0 2.292-.337 2.657-.751.384-.435.558-1.15.558-2.361 0-1.14-.243-1.847-.705-2.319-.477-.488-1.319-.862-2.824-1.025-1.487-.161-2.192.138-2.533.529-.269.307-.437.808-.438 1.578v.021c0 .265.021.562.063.893Zm-1.626 0c.042-.331.063-.628.063-.894v-.02c-.001-.77-.169-1.271-.438-1.578-.341-.391-1.046-.69-2.533-.529-1.505.163-2.347.537-2.824 1.025-.462.472-.705 1.179-.705 2.319 0 1.211.175 1.926.558 2.361.365.414 1.084.751 2.657.751 1.21 0 1.902-.394 2.344-.938.475-.584.742-1.44.878-2.497Z"/></symbol>
+  <symbol id="robinhood" viewBox="0 0 24 24"><path d="M2.84 24h.53c.096 0 .192-.048.224-.128C7.591 13.696 11.94 8.656 14.67 5.638c.112-.128.064-.225-.096-.225h-4.88a.55.55 0 0 0-.45.225L5.746 9.972c-.514.642-.642 1.236-.642 2.086v4.43c-1.14 3.194-1.862 5.361-2.392 7.32-.032.125.016.192.129.192M20.447.646c-.754-.802-4.157-.834-5.73-.224a3 3 0 0 0-.786.465 41 41 0 0 0-3.323 3.178c-.112.113-.064.225.097.225h5.409c.497 0 .786.289.786.786v6.1c0 .16.128.208.225.064l3.258-4.254c.53-.69.69-.898.835-1.861.192-1.413.08-3.58-.77-4.479m-6.982 16.18 2.231-3.676a.7.7 0 0 0 .064-.29V6.73c0-.16-.112-.225-.224-.097-3.355 3.74-5.971 7.672-8.395 12.407-.06.12.016.225.16.177l5.009-1.54c.565-.174.882-.402 1.155-.852"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></g></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></g></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12.5 15h4.5"/></g></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></g></symbol>
+  <symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></g></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g></symbol>
+  <symbol id="i-question" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6M12 17h.01"/></g></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></g></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></g></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5l-8.2 8.2a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"/></g></symbol>
+  <symbol id="i-loop" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></g></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></g></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h4v4c0 3-2 5-4 5M14 7h4v4c0 3-2 5-4 5"/></g></symbol>
+  <symbol id="i-nodes" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.2 8.3l3.6 7.4M16.8 8.3l-3.6 7.4M8.5 6h7"/></g></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></g></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></g></symbol>
+</defs></svg>
+
+<style>
+  .b-kimi { background: #1b1b1f; color: #fff; }
+  .b-nvidia { background: #76b900; color: #111; }
+  .b-deepseek { background: #4d6bfe; color: #fff; }
+  .b-hf { background: #ffd21e; color: #111; }
+  .b-sp { background: #d6002a; color: #fff; }
+  .b-amp { background: #f34e3f; color: #fff; }
+  .b-google { background: #4285f4; color: #fff; }
+  .b-ic { background: #3b2f63; color: #fff; }
+  .b-apollo { background: #0b2b4c; color: #fff; }
+  .b-litellm { background: #7c3aed; color: #fff; }
+</style>
+
+<div class="page">
+
+  <header>
+    <div class="meta">
+      <span>AI Weekly · No. 05</span>
+      <span>Week 43 · Oct 19 – 25, 2026</span>
+    </div>
+    <h1>A poisoned package reached the harness. Agents reached the bank. The Claude API dropped old defaults.</h1>
+    <p class="deck">The headlines take 30 seconds, the top five about three minutes, the whole page about eleven. Every item links to its source.</p>
+    <div class="brands" aria-label="Sources this week">
+      <span class="brand"><span class="logo b-litellm sm" aria-hidden="true"><span class="mono-mark">L</span></span>LiteLLM</span>
+      <span class="brand"><span class="logo b-anthropic sm" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>Anthropic</span>
+      <span class="brand"><span class="logo b-cloudflare sm" aria-hidden="true"><span class="mono-mark">C</span></span>Cloudflare</span>
+      <span class="brand"><span class="logo b-kimi sm" aria-hidden="true"><span class="mono-mark">K</span></span>Moonshot</span>
+      <span class="brand"><span class="logo b-openai sm" aria-hidden="true"><svg><use href="#openai"/></svg></span>OpenAI</span>
+      <span class="brand"><span class="logo b-github sm" aria-hidden="true"><svg><use href="#github"/></svg></span>GitHub</span>
+      <span class="brand"><span class="logo b-nvidia sm" aria-hidden="true"><span class="mono-mark">N</span></span>NVIDIA</span>
+      <span class="brand"><span class="logo b-deepseek sm" aria-hidden="true"><span class="mono-mark">D</span></span>DeepSeek</span>
+      <span class="brand"><span class="logo b-mistral sm" aria-hidden="true"><span class="mono-mark">M</span></span>Mistral</span>
+      <span class="brand"><span class="logo b-sp sm" aria-hidden="true"><span class="mono-mark">S</span></span>S&amp;P Global</span>
+      <span class="brand"><span class="logo b-hn sm" aria-hidden="true"><span class="mono-mark">Y</span></span>Hacker News</span>
+      <span class="brand"><span class="logo b-mic sm" aria-hidden="true"><svg><use href="#i-mic"/></svg></span>Latent Space, All-In</span>
+    </div>
+  </header>
+
+  <section class="top" aria-labelledby="top-h">
+    <h2 id="top-h">This week</h2>
+    <ol>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-security" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>
+            <span class="who"><b>LiteLLM, Datadog, Hacker News</b> · Oct 21</span>
+            <span class="pill sec"><svg aria-hidden="true"><use href="#i-shield"/></svg>Security</span>
+          </div>
+          <h3>A poisoned LiteLLM release stole keys from the proxy many agent stacks route through</h3>
+          <p>LiteLLM 1.107.0 on PyPI and Docker was malware for about two hours on Oct 21. The attacker used three developers' GitHub CLI tokens, disabled branch protection and built from a lookalike fork, <code>Berri-AI/litellm</code>. The stealer ran at every Python start and took cloud keys, SSH keys and every provider key in the proxy database. LiteLLM says the tokens may have leaked through its own logs of Claude Code responses.</p>
+          <p class="forus"><b>For us:</b> pin <code>litellm==1.106.2</code> or earlier wherever an LLM proxy sits in our stack, treat agent logs as places credentials leak, and keep keys out of the agent's reach. Catch-up list below.</p>
+          <div class="src"><a href="https://docs.litellm.ai/blog/security-incident-oct-21-2026">LiteLLM: security incident</a> · <a href="https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-docker/">Datadog Security Labs</a> · <a href="https://news.ycombinator.com/item?id=50181114">Hacker News (595 points)</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-bank" aria-hidden="true"><svg><use href="#i-bank"/></svg></span>
+            <span class="who"><b>Axios via CBS, Anthropic</b> · Oct 21 to 23</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-bank"/></svg>Fintech</span>
+          </div>
+          <h3>Banks found customers' AI agents inside their accounts, the same week Anthropic launched one that asks first</h3>
+          <p>Axios reported that "dozens" of US banks found personal AI agents logged in with customers' passwords, some acting without being asked. Dimon: "We're not going to allow just any outside agents to come in inside the company." Anthropic's Claude Duet (research preview, Opus 5.5, US waitlist) runs in the background and asks before sending or paying; Anthropic's article says trading and moving money stay off-limits even with approval.</p>
+          <p class="forus"><b>For us:</b> agent identity, scoped read-only access and an audit trail become a client requirement. Duet's "ask first, never trade" rules are the ones our client-facing agents will need.</p>
+          <div class="src"><a href="https://www.cbsnews.com/news/ai-agents-customer-bank-accounts-security/">CBS News on the Axios report</a> · <a href="https://claude.com/product/claude-duet">Claude Duet</a> · <a href="https://claude.com/resources/articles/claude-duet">Anthropic: how Duet decides</a> · <a href="https://news.ycombinator.com/item?id=50186037">Hacker News (567 points)</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-claude" aria-hidden="true"><svg><use href="#claude"/></svg></span>
+            <span class="who"><b>Anthropic</b> · Oct 19 to 23</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-terminal"/></svg>Dev tools</span>
+          </div>
+          <h3>Claude API version 2026-10-21 rejects temperature, and Claude Code now logs every blocked tool call</h3>
+          <p>On API version <code>2026-10-21</code>, sending <code>temperature</code>, <code>top_p</code> or <code>top_k</code> returns 400, even at the default. New SDK majors (Python 2.0, TypeScript 1.0, Go 2.0, Java 3.0) send the new version by default; <code>2023-06-01</code> callers are unaffected. Claude Code 2.1.307 adds the <code>claude_code.safety_event</code> OpenTelemetry event for each tool call a rule, hook or sandbox stopped. 2.1.309 makes <code>claude ultrareview</code> require <code>--trust-workspace</code> in scripts.</p>
+          <p class="forus"><b>For us:</b> pin SDK versions, then run <code>/claude-api api-version</code> on a branch before any bump. <code>safety_event</code> is the approval audit trail our harness traces were missing. Fix CI that calls ultrareview.</p>
+          <div class="src"><a href="https://platform.claude.com/docs/en/api/migration-2026-10-21">Migration guide</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">Release notes</a> · <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-anthropic" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>
+            <span class="who"><b>Anthropic, Cloudflare</b> · Oct 22 · trending</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-nodes"/></svg>Agents</span>
+          </div>
+          <h3>Agent Skills became a vendor-neutral standard, and Cloudflare's security-audit skill is the week's most-starred repo</h3>
+          <p>Anthropic gave the Agent Skills spec, name, GitHub org and domain to the Linux Foundation's Agentic AI Foundation, where MCP already lives; it counts over 70 platforms and 1 million published skills. Cloudflare's MIT security-audit skill (47.8k stars) runs six phases: isolated hunters, a fresh verifier that tries to disprove each finding, then independent re-verification into <code>findings.json</code>.</p>
+          <p class="forus"><b>For us:</b> the week's developer deep item. Our <code>SKILL.md</code> work now ports across Claude, Codex and Cursor. Install the audit skill with <code>npx skills add</code> and run it on a non-client repo; copy its disprove-then-reverify loop for spec review.</p>
+          <div class="src"><a href="https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation">Anthropic: donating Agent Skills</a> · <a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a> · <a href="https://simonwillison.net/2026/Oct/22/donating-agent-skills/">Willison</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-kimi" aria-hidden="true"><span class="mono-mark">K</span></span>
+            <span class="who"><b>Moonshot</b> · Oct 23</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-cpu"/></svg>Models</span>
+          </div>
+          <h3>Kimi K3.1 Pro lands a point behind Opus 5.5 at half the price, with open weights promised by Nov 4</h3>
+          <p>Moonshot's "3T-class" model has a 1M-token context and Zero Data Retention on the API. Its own numbers: Terminal-Bench 4.0 65.7% against Opus 5.5's 66.4%, hallucination rate 8.3% with tools. Artificial Analysis lists $2 / $10 per million tokens, index 55 (rank 4), and calls it "notably slow" at 51.5 tokens a second. No licence is stated; weights are due by Nov 4.</p>
+          <p class="forus"><b>For us:</b> a cheap second vendor for the harness bake-off; its finance benchmarks are vendor-reported. Nothing near client data until the licence is out. Catch-up list below.</p>
+          <div class="src"><a href="https://www.kimi.ai/blog/kimi-k3-1-pro">Moonshot: Kimi K3.1 Pro</a> · <a href="https://artificialanalysis.ai/models/kimi-k3-1-pro">Artificial Analysis</a> · <a href="https://simonwillison.net/2026/Oct/23/kimi-k31-pro/">Willison</a></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="trend" aria-labelledby="trend-h">
+    <h2 id="trend-h"><svg class="si" aria-hidden="true"><use href="#i-trend"/></svg>The trend</h2>
+    <p class="claim">Agents hit the perimeter from both sides, and the controls started shipping as products.</p>
+    <p>Last week the finance keynotes described "deterministic controls outside the model". This week they got names. Customers' agents reached the bank with the customer's password, and the banks said no; Anthropic shipped an agent that asks first and will not trade. A poisoned proxy release showed that an agent's logs and environment are where keys leak; NVIDIA's <span class="term">OpenShell</span> is a runtime that never shows the agent a real credential. The Claude platform added per-customer <span class="term">user profiles</span>, and Claude Code emits a <span class="term">safety_event</span> for every blocked tool call. For a fintech harness the checklist is concrete: credentials the agent cannot read, an identity per end customer, approval before money moves, a trace of every refusal.</p>
+  </section>
+
+  <section class="deep" id="litellm" aria-labelledby="litellm-h">
+    <div class="deep-head">
+      <span class="logo b-litellm lg" aria-hidden="true"><span class="mono-mark">L</span></span>
+      <h2 id="litellm-h">Catch up: the LiteLLM supply-chain attack</h2>
+    </div>
+    <span class="date">Incident Oct 21, 2026 · LiteLLM post updated since</span>
+    <p><b>What it is.</b> LiteLLM is the open-source proxy many teams put between their agents and model vendors. One release of it was malware, published through the project's own pipeline with stolen developer tokens. PyPI pulled it in 1 h 43 min; Docker tags pointed at it for 2 h 33 min.</p>
+    <p class="forus">If any machine or image installed 1.107.0 with outbound internet, assume exfiltration: rotate the instance role, every provider key in the proxy database, master and virtual keys, and <code>DATABASE_URL</code>.</p>
+    <ol class="reading">
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-flag"/></svg>Start here</span><a href="https://docs.litellm.ai/blog/security-incident-oct-21-2026">LiteLLM: security incident Oct 21</a><span class="why">Timeline, how the attacker got in, what to rotate. Some early assumptions were later corrected. 5 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-terminal"/></svg>Try it</span><a href="https://docs.litellm.ai/blog/security-incident-oct-21-2026">Same post, "guidance for affected users"</a><span class="why">Look for <code>cook.pth</code> and <code>sitecustomize.py</code> in site-packages and a daemon holding <code>/tmp/remote_code_loader.lock</code>. Do not start with <code>pip install</code>. 10 min per machine.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-layers"/></svg>Go deeper</span><a href="https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-docker/">Datadog Security Labs</a><span class="why">The lookalike fork, indicators of compromise, detection rules. 8 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-layers"/></svg>Go deeper</span><a href="https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/">SafeDep: the credential stealer</a><span class="why">What the payload collects and when it runs. 5 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-question"/></svg>The skeptic view</span><a href="https://news.ycombinator.com/item?id=50181114">Hacker News thread</a><span class="why">Do release cooldowns and version pins help, or do attackers wait them out? Several teams replaced LiteLLM with a small proxy of their own. 15 min to skim.</span></li>
+    </ol>
+  </section>
+
+  <section class="deep" id="kimi" aria-labelledby="kimi-h">
+    <div class="deep-head">
+      <span class="logo b-kimi lg" aria-hidden="true"><span class="mono-mark">K</span></span>
+      <h2 id="kimi-h">Catch up: Kimi K3.1 Pro</h2>
+    </div>
+    <span class="date">API Oct 23, 2026 · weights promised by Nov 4</span>
+    <p><b>What it is.</b> Moonshot's largest model, a thinking model with reasoning effort low, high or max, aimed at long agent runs and office work. Vendor numbers put it next to Opus 5.5 on terminal tasks; third-party numbers put it fourth overall and slow.</p>
+    <p class="forus">A price point to test against, and a licence to wait for.</p>
+    <ol class="reading">
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-flag"/></svg>Start here</span><a href="https://www.kimi.ai/blog/kimi-k3-1-pro">Moonshot: Kimi K3.1 Pro</a><span class="why">The claims, the finance and office benchmarks, the weights date. 5 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-terminal"/></svg>Try it</span><a href="https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart.md">API quickstart</a><span class="why">Defaults and fixed sampling settings; thinking is always on. 5 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-terminal"/></svg>Hands on</span><a href="https://simonwillison.net/2026/Oct/23/kimi-k31-pro/">Willison: Kimi K3.1 Pro</a><span class="why">One command through the <code>llm</code> plugin and a run at each reasoning level. 5 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-layers"/></svg>Go deeper</span><a href="https://artificialanalysis.ai/models/kimi-k3-1-pro">Artificial Analysis</a><span class="why">Index, price per task, speed, all third-party. 3 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-question"/></svg>The skeptic view</span><a href="https://www.interconnects.ai/p/podcast-kimi-k31-pro-the-new-cyber">Interconnects podcast #20</a><span class="why">Split user impressions and one B300-class node per replica. Read the notes; the audio is 47 min.</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="more-h">
+    <h2 id="more-h">Also this week</h2>
+    <ul class="group">
+      <li>
+        <span class="logo b-claude" aria-hidden="true"><svg><use href="#claude"/></svg></span>
+        <span class="date">2026-10-09 and 10-20 · Managed Agents: agents write their own workflows, and web fetch is fenced</span>
+        <p>Dynamic workflows (beta): an agent writes a program that runs many agents in the background and combines the results. Enable with <code>"multiagent": {"type": "multiagent_20261001", "workflows": {"type": "enabled"}}</code>. <code>web_fetch</code> now only fetches URLs already seen in the session, and org-level web restrictions apply to sessions.</p>
+        <p class="forus"><b>For us:</b> the managed version of our fan-out design, with an egress rule we can copy. One agent in a sandbox this week.</p>
+        <div class="src"><a href="https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration">Multi-agent orchestration</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">Release notes, Oct 7 and 20</a></div>
+      </li>
+      <li>
+        <span class="logo b-claude" aria-hidden="true"><svg><use href="#claude"/></svg></span>
+        <span class="date">2026-10-20 and 10-21 · Claude API: one profile per end customer</span>
+        <p><code>/v1/user_profiles</code> ties each request to one of your customers, so an enforcement action restricts that customer rather than your org key. Profiles carry <code>enforcement_status</code>; org webhooks (beta) fire when one is restricted or restored.</p>
+        <p class="forus"><b>For us:</b> a design change for any multi-tenant client app: send a customer ID per request.</p>
+        <div class="src"><a href="https://platform.claude.com/docs/en/release-notes/overview">Release notes</a></div>
+      </li>
+      <li>
+        <span class="logo b-openai" aria-hidden="true"><svg><use href="#openai"/></svg></span>
+        <span class="date">2026-10-20 to 10-23 · OpenAI: 12-hour prompt cache, Decisions API GA, Codex CLI 0.164</span>
+        <p><code>prompt_cache_options.ttl: "12h"</code> in the Responses API (GPT-5.6 and later) costs 2.5x input to write and 0.1x to read. The Decisions API is GA on <code>gpt-6-luna</code>, up to 400 questions a request. Codex CLI 0.164 adds OAuth for enterprise MCP connections and credential masking in remote Bash output.</p>
+        <p class="forus"><b>For us:</b> a long shared system prompt plus tool spec used all day pays one write; a real cost lever for the OpenAI side of a bake-off.</p>
+        <div class="src"><a href="https://developers.openai.com/api/docs/guides/prompt-caching">Prompt caching</a> · <a href="https://developers.openai.com/api/docs/changelog">OpenAI changelog</a> · <a href="https://learn.chatgpt.com/docs/changelog">Codex changelog</a></div>
+      </li>
+      <li>
+        <span class="logo b-copilot" aria-hidden="true"><svg><use href="#copilot"/></svg></span>
+        <span class="date">2026-10-19 and 10-23 · Copilot: six more models retired, model policy by API, usage per agent tool</span>
+        <p>Retired Oct 19: Gemini 3.7 Flash, GPT-5.5, GPT-5.4, GPT-5.4 mini, GPT-5 mini and Grok 4.5, a separate list from the Nov 16 round. The model policy API is GA. Usage metrics gain <code>totals_by_client</code>: requests, sessions and tokens per model for Claude Code, Codex, OpenCode and others.</p>
+        <p class="forus"><b>For us:</b> enforce which models agents may use as code, and get the first vendor view of cross-tool agent spend.</p>
+        <div class="src"><a href="https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026">Retired models</a> · <a href="https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams">Model policy API</a> · <a href="https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode">Usage metrics</a></div>
+      </li>
+      <li>
+        <span class="logo b-nvidia" aria-hidden="true"><span class="mono-mark">N</span></span>
+        <span class="date">Trending · NVIDIA OpenShell: an agent runtime that never shows the agent a key</span>
+        <p>Apache 2.0, about 20k stars. Each agent runs in a kernel-level sandbox, every network connection passes a policy check, and credentials are added only to requests bound for approved endpoints. Formal verification flags a policy change that gives a new host credentials, for a person to review. The installer is a curl-pipe-sh; read it first.</p>
+        <p class="forus"><b>For us:</b> the LiteLLM lesson as a runtime. Compare its policy model with our sandbox before we build more of our own.</p>
+        <div class="src"><a href="https://github.com/NVIDIA/OpenShell">NVIDIA/OpenShell</a></div>
+      </li>
+      <li>
+        <span class="logo b-amp" aria-hidden="true"><span class="mono-mark">A</span></span>
+        <span class="date">2026-10-21 to 10-23 · Amp self-hosted orbs, and framework releases</span>
+        <p>Amp's cloud agents can run in your own sandboxes: <code>amp orb provider ./dispatch.sh</code> receives spawn, pause and delete requests, with examples for Docker, Kubernetes, Modal and E2B. Google ADK 2.13 moves to OTel GenAI v2 spans; Mastra 1.79 adds MCP Events, a vendor extension; langchain-core 1.7 streams tool-call arguments as deltas.</p>
+        <p class="forus"><b>For us:</b> Amp's dispatch contract is the sandbox interface a harness should define. MCP itself shipped nothing this week.</p>
+        <div class="src"><a href="https://ampcode.com/news/self-hosted-orbs">Amp</a> · <a href="https://github.com/google/adk-python/releases">ADK releases</a> · <a href="https://github.com/mastra-ai/mastra/releases">Mastra releases</a> · <a href="https://docs.langchain.com/oss/python/releases/changelog">LangChain changelog</a></div>
+      </li>
+      <li>
+        <span class="logo b-deepseek" aria-hidden="true"><span class="mono-mark">D</span></span>
+        <span class="date">2026-10-20 · DeepSeek open-sources DeepInfer, and Hacker News argues whether inference pays</span>
+        <p>Apache 2.0, built on vLLM, runs DeepSeek V4.1 Flash on NVIDIA SM100 and Huawei Ascend 950, with batch-invariant inference and deterministic sampling. The week's top AI thread (2,351 points) argued whether open-weight inference is now profitable; the figures quoted there are unverified.</p>
+        <p class="forus"><b>For us:</b> deterministic sampling suits an audit trail. Self-hosting an open model keeps getting cheaper to argue for.</p>
+        <div class="src"><a href="https://github.com/deepseek-ai/DeepInfer">deepseek-ai/DeepInfer</a> · <a href="https://news.ycombinator.com/item?id=50163277">Hacker News</a></div>
+      </li>
+            <li>
+        <span class="logo b-hf" aria-hidden="true"><span class="mono-mark">H</span></span>
+        <span class="date">Trending · Open models that fit one GPU, and a rig for self-improving agents</span>
+        <p>Recursive Superintelligence's flint (Apache 2.0, 39.8B with about 2.5B active) claims SWE-bench Verified 74.2%; MiniMax M3.1 Flash reports BankerToolBench 76.2; Qwen3.8-27B (Apache 2.0) is trending again. All self-reported. RSIHub reimplements four agent-evolution methods and finds their gains often fail on held-out tasks.</p>
+        <p class="forus"><b>For us:</b> flint and Qwen3.8-27B are small enough for a local agent test; RSIHub is the honest baseline for any "self-improving harness" claim.</p>
+        <div class="src"><a href="https://huggingface.co/RecursiveSI/flint">flint</a> · <a href="https://huggingface.co/MiniMaxAI/MiniMax-M3.1-Flash">MiniMax M3.1 Flash</a> · <a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen3.8-27B</a> · <a href="https://huggingface.co/papers/2610.32253">RSIHub</a></div>
+      </li>
+          </ul>
+    <ul class="group">
+      <li>
+        <span class="logo b-sp" aria-hidden="true"><span class="mono-mark">S</span></span>
+        <span class="date">Trending · announced Oct 15 · S&amp;P Global puts Visible Alpha consensus data on MCP</span>
+        <p>Visible Alpha estimates (250+ brokers, 8,000+ companies) join the S&amp;P Global AI Data Portal for MCP clients including Claude, GPT, Gemini and Copilot. Deterministic Retrieval is live; Adaptive Retrieval for agents working across datasets is due later in 2026.</p>
+        <p class="forus"><b>For us:</b> the second major data vendor on MCP after Bloomberg. Clients will ask how our tools sit beside it.</p>
+        <div class="src"><a href="https://press.spglobal.com/2026-10-15-S-P-Global-brings-Visible-Alpha-data-to-the-S-P-Global-AI-Data-Portal">S&amp;P Global</a></div>
+      </li>
+      <li>
+        <span class="logo b-google" aria-hidden="true"><span class="mono-mark">G</span></span>
+        <span class="date">2026-10-21 and 10-22 · GPT-6 on Google Cloud, Claude on Google Cloud</span>
+        <p>GPT-6 Astra, GPT-6.1 Sol and GPT-6 Luna are in Model Garden for select enterprise customers, billed against existing Google Cloud commitments; no prices yet. Anthropic-managed Claude models arrived there the next day.</p>
+        <p class="forus"><b>For us:</b> a client on Google Cloud can now buy all three frontier vendors against one commitment, which changes the procurement answer for a multi-model harness.</p>
+        <div class="src"><a href="https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-brings-openai-models-to-customers">Google Cloud</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">Claude release notes, Oct 22</a></div>
+      </li>
+            <li>
+        <span class="logo b-apollo" aria-hidden="true"><span class="mono-mark">$</span></span>
+        <span class="date">2026-10-20 to 10-24 · The bubble week: Griffin, Apollo, and a 10-year-old CNN</span>
+        <p>Ken Griffin called AI "almost certainly" a bubble, and said agents cut some Citadel research from 6 to 8 weeks to 2 to 3 hours (news report). Apollo's Torsten Slok sees no AI payoff outside the Magnificent 7. A dermatology post found a 10-year-old CNN beat GPT-6 Astra and Claude Fable 5.1 on 200 skin lesions, 62% to 42%, one run each.</p>
+        <p class="forus"><b>For us:</b> the Citadel figure is a client-facing proof point; the CNN result is the case for a small purpose-built model on a narrow classifier.</p>
+        <div class="src"><a href="https://247wallst.com/investing/2026/10/21/ken-griffin-there-are-almost-certainly-bubbles-in-ai-right-now/">24/7 Wall St</a> · <a href="https://www.apollo.com/wealth/insights-news/insights/daily-spark/no-signs-of-ai-payoff-outside-the-tech-sector">Apollo</a> · <a href="https://lynchlab.net/llm-skin-cancer">Lynch Lab</a></div>
+      </li>
+          </ul>
+    <ul class="group">
+      <li>
+        <span class="logo b-lc" aria-hidden="true"><span class="mono-mark">L</span></span>
+        <span class="date">2026-10-21 · Latent Space: how Tenex builds an AI-native SDLC, 44 min; All-In on "SaaS collapse"</span>
+        <p>Alex Lieberman and CJ Hess on MetaHarness: shared skills, docs and a CLI, with plans and decisions checked into Git so agents see why something was built. Chapters at 7:20 (inside MetaHarness), 15:11 (token spend and ROI), 30:32 ("Kill My SaaS"). Their claim: output per engineer roughly doubled this year. All-In's Oct 21 episode with Arvind Krishna and Nikesh Arora covers open against frontier models and "SaaS collapse"; topics from the page, not watched.</p>
+        <p class="forus"><b>For us:</b> the closest public match to our harness and spec pipeline; the "SaaS collapse" argument is the one our leadership will hear from clients.</p>
+        <div class="src"><a href="https://www.latent.space/p/tenex">Latent Space</a> · <a href="https://www.allin.com">All-In</a></div>
+      </li>
+          </ul>
+  </section>
+
+  <section class="ahead" aria-labelledby="ahead-h">
+    <h2 id="ahead-h" style="margin:0">Coming up</h2>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>By Oct 31.</b> Mistral Large 4 weights, promised "by the end of the month"; no licence stated yet.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Nov 4.</b> Kimi K3.1 Pro weights; the licence decides whether it joins Beam as a self-hosting option.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Nov 12.</b> Anthropic's updated usage policy takes effect.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Nov 16.</b> Copilot drops Claude Opus 4.8, Claude Opus 5 and GPT-5.6 Terra.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Dec 1.</b> Gemini 4 Argon's price doubles to $4 and $20.</span></p>
+    <p class="forus"><b>For us:</b> two open-weight licences land within ten days; the Argon bake-off still has five weeks at half price.</p>
+    <div class="src"><a href="https://mistral.ai/news/mistral-large-4/">Mistral Large 4</a> · <a href="https://www.kimi.ai/blog/kimi-k3-1-pro">Kimi K3.1 Pro</a> · <a href="https://www.anthropic.com/news/2026-usage-policy-update">Usage policy</a> · <a href="https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november">Copilot deprecation</a> · <a href="https://simonwillison.net/2026/Oct/13/llm-gemini/">Argon pricing</a></div>
+  </section>
+
+  <details>
+    <summary>All sources this week</summary>
+    <ul>
+      <li><a href="https://docs.litellm.ai/blog/security-incident-oct-21-2026">LiteLLM: security incident, Oct 21, 2026</a></li>
+      <li><a href="https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-docker/">Datadog Security Labs: LiteLLM compromised on PyPI and Docker</a></li>
+      <li><a href="https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/">SafeDep: LiteLLM credential stealer</a></li>
+      <li><a href="https://news.ycombinator.com/item?id=50181114">Hacker News: LiteLLM incident</a></li>
+      <li><a href="https://www.cbsnews.com/news/ai-agents-customer-bank-accounts-security/">CBS News: AI agents in customer bank accounts</a></li>
+      <li><a href="https://claude.com/product/claude-duet">Claude Duet</a></li>
+      <li><a href="https://claude.com/resources/articles/claude-duet">Anthropic: Claude Duet article</a></li>
+      <li><a href="https://news.ycombinator.com/item?id=50186037">Hacker News: Claude Duet</a></li>
+      <li><a href="https://platform.claude.com/docs/en/api/migration-2026-10-21">Claude docs: migrating to API version 2026-10-21</a></li>
+      <li><a href="https://platform.claude.com/docs/en/release-notes/overview">Claude platform release notes</a></li>
+      <li><a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></li>
+      <li><a href="https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation">Anthropic: donating Agent Skills to the Agentic AI Foundation</a></li>
+      <li><a href="https://simonwillison.net/2026/Oct/22/donating-agent-skills/">Simon Willison: donating Agent Skills</a></li>
+      <li><a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a></li>
+      <li><a href="https://www.kimi.ai/blog/kimi-k3-1-pro">Moonshot: Kimi K3.1 Pro</a></li>
+      <li><a href="https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart.md">Kimi K3.1 Pro quickstart</a></li>
+      <li><a href="https://simonwillison.net/2026/Oct/23/kimi-k31-pro/">Simon Willison: Kimi K3.1 Pro</a></li>
+      <li><a href="https://artificialanalysis.ai/models/kimi-k3-1-pro">Artificial Analysis: Kimi K3.1 Pro</a></li>
+      <li><a href="https://www.interconnects.ai/p/podcast-kimi-k31-pro-the-new-cyber">Interconnects podcast #20</a></li>
+      <li><a href="https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration">Claude docs: multi-agent orchestration</a></li>
+      <li><a href="https://developers.openai.com/api/docs/guides/prompt-caching">OpenAI: prompt caching</a></li>
+      <li><a href="https://developers.openai.com/api/docs/changelog">OpenAI API changelog</a></li>
+      <li><a href="https://learn.chatgpt.com/docs/changelog">Codex changelog</a></li>
+      <li><a href="https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026">GitHub: Copilot models deprecated Oct 19</a></li>
+      <li><a href="https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams">GitHub: Copilot model policy API</a></li>
+      <li><a href="https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode">GitHub: usage metrics by client</a></li>
+      <li><a href="https://github.com/NVIDIA/OpenShell">NVIDIA/OpenShell</a></li>
+      <li><a href="https://ampcode.com/news/self-hosted-orbs">Amp: self-hosted orbs</a></li>
+      <li><a href="https://github.com/google/adk-python/releases">Google ADK Python releases</a></li>
+      <li><a href="https://github.com/mastra-ai/mastra/releases">Mastra releases</a></li>
+      <li><a href="https://docs.langchain.com/oss/python/releases/changelog">LangChain changelog</a></li>
+      <li><a href="https://github.com/deepseek-ai/DeepInfer">deepseek-ai/DeepInfer</a></li>
+      <li><a href="https://news.ycombinator.com/item?id=50163277">Hacker News: DeepInfer</a></li>
+      <li><a href="https://huggingface.co/RecursiveSI/flint">Hugging Face: flint</a></li>
+      <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-M3.1-Flash">Hugging Face: MiniMax M3.1 Flash</a></li>
+      <li><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Hugging Face: Qwen3.8-27B</a></li>
+      <li><a href="https://huggingface.co/papers/2610.32253">Hugging Face papers: RSIHub</a></li>
+      <li><a href="https://mistral.ai/news/mistral-large-4/">Mistral Large 4</a></li>
+      <li><a href="https://press.spglobal.com/2026-10-15-S-P-Global-brings-Visible-Alpha-data-to-the-S-P-Global-AI-Data-Portal">S&amp;P Global: Visible Alpha on the AI Data Portal</a></li>
+      <li><a href="https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-brings-openai-models-to-customers">Google Cloud: OpenAI models</a></li>
+      <li><a href="https://247wallst.com/investing/2026/10/21/ken-griffin-there-are-almost-certainly-bubbles-in-ai-right-now/">24/7 Wall St: Ken Griffin on AI bubbles</a></li>
+      <li><a href="https://www.apollo.com/wealth/insights-news/insights/daily-spark/no-signs-of-ai-payoff-outside-the-tech-sector">Apollo: no signs of AI payoff outside tech</a></li>
+      <li><a href="https://lynchlab.net/llm-skin-cancer">Lynch Lab: a 10-year-old CNN vs frontier LLMs</a></li>
+      <li><a href="https://www.latent.space/p/tenex">Latent Space: Tenex</a></li>
+      <li><a href="https://www.allin.com">All-In</a></li>
+      <li><a href="https://www.anthropic.com/news/2026-usage-policy-update">Anthropic: usage policy update</a></li>
+      <li><a href="https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november">GitHub: Copilot deprecations Nov 16</a></li>
+      <li><a href="https://simonwillison.net/2026/Oct/13/llm-gemini/">Simon Willison: Gemini 4 Argon pricing</a></li>
+    </ul>
+  </details>
+
+  <footer>
+    <p>Public sources only. Compiled by Hai Wang with Claude. Questions or a signal I missed: reply in the AI Labs chat. Logos are trademarks of their owners and mark the source of each item; brand icons from Simple Icons (CC0).</p>
+    <p><a href="../">All AI Weekly issues</a></p>
+  </footer>
+
+</div>
+</html>
