@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>AI Weekly W46</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --ink: #111827;
+    --muted: #586174;
+    --faint: #dfe3ea;
+    --accent: #2447b3;
+    --accent-soft: #e8edfb;
+    --forus: #0f5f4a;
+    --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+    --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0e1117;
+      --surface: #161b24;
+      --ink: #e6e9ef;
+      --muted: #9aa3b4;
+      --faint: #2a3140;
+      --accent: #93a9ff;
+      --accent-soft: #1d2640;
+      --forus: #6fd3b3;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0e1117;
+    --surface: #161b24;
+    --ink: #e6e9ef;
+    --muted: #9aa3b4;
+    --faint: #2a3140;
+    --accent: #93a9ff;
+    --accent-soft: #1d2640;
+    --forus: #6fd3b3;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    padding-inline: 16px;
+    padding-block: 32px 56px;
+  }
+  .page { max-width: 720px; margin: 0 auto; display: grid; gap: 40px; }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  code { font-family: var(--mono); font-size: 0.92em; }
+
+  .meta, .date, .src {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+  }
+
+  /* Masthead */
+  header { display: grid; gap: 10px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(34px, 7vw, 46px);
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .deck { margin: 0; color: var(--muted); max-width: 60ch; }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  /* Top section */
+  .top {
+    background: var(--surface);
+    border: 1px solid var(--faint);
+    border-radius: 6px;
+    padding: 22px 22px 8px;
+  }
+  .top ol { list-style: none; margin: 0; padding: 0; counter-reset: rank; }
+  .top li {
+    counter-increment: rank;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 0 12px;
+    padding-block: 14px;
+    border-top: 1px solid var(--faint);
+  }
+  .top li:first-child { border-top: 0; padding-top: 0; }
+  .top li::before {
+    content: counter(rank);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--accent);
+  }
+  .top h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.2;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .top p { margin: 0 0 6px; max-width: 65ch; }
+
+  .forus { color: var(--forus); font-weight: 500; }
+  .forus b { font-weight: 600; }
+
+  .src { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 2px; }
+
+  /* Trend */
+  .trend p { margin: 0 0 12px; max-width: 65ch; }
+  .trend .claim {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.2;
+    text-wrap: balance;
+    margin-bottom: 12px;
+  }
+  .term { background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; }
+
+  /* Details */
+  .group { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .group + .group { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--faint); }
+  .group li { display: grid; gap: 4px; }
+  .group p { margin: 0; max-width: 65ch; }
+  .recap { font-style: italic; }
+
+  .deep {
+    background: var(--surface);
+    border: 1px solid var(--faint);
+    border-radius: 6px;
+    padding: 22px;
+    display: grid;
+    gap: 10px;
+    scroll-margin-top: 16px;
+  }
+  .deep h2 { margin: 0; }
+  .deep p { margin: 0; max-width: 65ch; }
+  .reading { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 14px; }
+  .reading li {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 2px 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--faint);
+  }
+  .reading .step {
+    grid-row: span 2;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+  .reading a { font-weight: 500; }
+  .reading .why { font-size: 14.5px; color: var(--muted); }
+  @media (max-width: 480px) {
+    .deep { padding: 18px 16px; }
+    .reading li { grid-template-columns: 1fr; }
+    .reading .step { grid-row: auto; }
+  }
+
+  .ahead {
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 16px 18px;
+    display: grid;
+    gap: 4px;
+  }
+  .ahead p { margin: 0; }
+
+  /* Sources */
+  details { border-top: 1px solid var(--faint); padding-top: 14px; }
+  summary {
+    cursor: pointer;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  details ul { margin: 12px 0 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14.5px; }
+
+  footer { font-size: 13.5px; color: var(--muted); }
+  footer p { margin: 0; }
+
+  @media (max-width: 480px) {
+    .top { padding: 18px 16px 4px; }
+    .top li { grid-template-columns: 22px 1fr; gap: 0 10px; }
+    .top h3 { font-size: 19px; }
+    .trend .claim { font-size: 22px; }
+  }
+
+  /* Vivid layer: brand tiles mark each source, pills mark the topic, icons mark reading steps */
+  :root { --tile-ring: rgba(17, 24, 39, 0.08); --pill-bg: #eef1f6; --sec: #b42318; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --tile-ring: rgba(255, 255, 255, 0.16); --pill-bg: #1e2532; --sec: #ff8a7a; }
+  }
+  :root[data-theme="dark"] { --tile-ring: rgba(255, 255, 255, 0.16); --pill-bg: #1e2532; --sec: #ff8a7a; }
+
+  .logo {
+    width: 30px; height: 30px; flex: none;
+    border-radius: 8px;
+    display: inline-grid; place-items: center;
+    box-shadow: inset 0 0 0 1px var(--tile-ring);
+  }
+  .logo svg { width: 17px; height: 17px; fill: currentColor; }
+  .logo.sm { width: 22px; height: 22px; border-radius: 6px; }
+  .logo.sm svg { width: 13px; height: 13px; }
+  .logo.lg { width: 40px; height: 40px; border-radius: 10px; }
+  .logo.lg svg { width: 22px; height: 22px; }
+  .mono-mark { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1; }
+
+  /* Fixed brand pairs: each background carries its own foreground, so they read in both themes */
+  .b-openai    { background: #0d0d0d; color: #ffffff; }
+  .b-claude    { background: #d97757; color: #ffffff; }
+  .b-anthropic { background: #191919; color: #f0eee6; }
+  .b-gemini    { background: linear-gradient(135deg, #4285f4, #9b72cb 60%, #d96570); color: #ffffff; }
+  .b-github,
+  .b-copilot   { background: #24292f; color: #ffffff; }
+  .b-robinhood { background: #ccff00; color: #0b0b0b; }
+  .b-security  { background: #b42318; color: #ffffff; }
+  .b-bank      { background: #1f4e79; color: #ffffff; }
+  .b-pi        { background: #6d28d9; color: #ffffff; }
+  .b-clip      { background: #475467; color: #ffffff; }
+  .b-loop      { background: #0e7490; color: #ffffff; }
+  .b-mic       { background: #be185d; color: #ffffff; }
+  .b-cal       { background: var(--accent); color: var(--surface); }
+
+  /* In-this-issue strip */
+  .brands { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .brand {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 3px 11px 3px 3px;
+    border: 1px solid var(--faint); border-radius: 999px;
+    background: var(--surface);
+    font-size: 13.5px; font-weight: 500;
+  }
+  .brand .logo { border-radius: 999px; }
+
+  /* Kicker row: logo, who and when, topic */
+  .kicker { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-bottom: 8px; }
+  .kicker .who { font-family: var(--mono); font-size: 12.5px; color: var(--muted); letter-spacing: 0.02em; }
+  .kicker .who b { color: var(--ink); font-weight: 500; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 9px 2px 7px; border-radius: 999px;
+    background: var(--pill-bg); color: var(--muted);
+    font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .pill.sec { color: var(--sec); }
+  .pill svg, .si { width: 14px; height: 14px; flex: none; }
+
+  .deep-head { display: flex; align-items: center; gap: 12px; }
+  .reading .step { display: flex; align-items: flex-start; gap: 6px; }
+  .reading .step .si { margin-top: 1px; }
+  h2 .si { vertical-align: -2px; margin-right: 6px; }
+
+  .group li { grid-template-columns: 30px minmax(0, 1fr); gap: 4px 12px; }
+  .group li > .logo { grid-row: span 4; }
+  .group li > :not(.logo) { grid-column: 2; min-width: 0; }
+
+  .ahead p { display: flex; align-items: flex-start; gap: 10px; }
+  .ahead p .logo { margin-top: 1px; }
+  .ahead p.forus, .ahead .src { padding-left: 32px; }
+  .ahead p.forus { display: block; }
+
+  @media (max-width: 480px) {
+    .group li { grid-template-columns: 26px minmax(0, 1fr); gap: 4px 10px; }
+    .group li > .logo { width: 26px; height: 26px; }
+  }
+  .b-cloudflare { background: #f38020; color: #fff; }
+  .b-mistral { background: #ffd800; color: #111; }
+  .b-hn { background: #ff6600; color: #fff; }
+  .b-wiki { background: #006699; color: #fff; }
+  .b-lc { background: #1c3c3c; color: #fff; }
+  .b-cursor { background: #111; color: #fff; }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="openai" viewBox="0 0 24 24"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></symbol>
+  <symbol id="claude" viewBox="0 0 24 24"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></symbol>
+  <symbol id="anthropic" viewBox="0 0 24 24"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></symbol>
+  <symbol id="gemini" viewBox="0 0 24 24"><path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></symbol>
+  <symbol id="github" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+  <symbol id="copilot" viewBox="0 0 24 24"><path d="M23.922 16.997C23.061 18.492 18.063 22.02 12 22.02 5.937 22.02.939 18.492.078 16.997A.641.641 0 0 1 0 16.741v-2.869a.883.883 0 0 1 .053-.22c.372-.935 1.347-2.292 2.605-2.656.167-.429.414-1.055.644-1.517a10.098 10.098 0 0 1-.052-1.086c0-1.331.282-2.499 1.132-3.368.397-.406.89-.717 1.474-.952C7.255 2.937 9.248 1.98 11.978 1.98c2.731 0 4.767.957 6.166 2.093.584.235 1.077.546 1.474.952.85.869 1.132 2.037 1.132 3.368 0 .368-.014.733-.052 1.086.23.462.477 1.088.644 1.517 1.258.364 2.233 1.721 2.605 2.656a.841.841 0 0 1 .053.22v2.869a.641.641 0 0 1-.078.256Zm-11.75-5.992h-.344a4.359 4.359 0 0 1-.355.508c-.77.947-1.918 1.492-3.508 1.492-1.725 0-2.989-.359-3.782-1.259a2.137 2.137 0 0 1-.085-.104L4 11.746v6.585c1.435.779 4.514 2.179 8 2.179 3.486 0 6.565-1.4 8-2.179v-6.585l-.098-.104s-.033.045-.085.104c-.793.9-2.057 1.259-3.782 1.259-1.59 0-2.738-.545-3.508-1.492a4.359 4.359 0 0 1-.355-.508Zm2.328 3.25c.549 0 1 .451 1 1v2c0 .549-.451 1-1 1-.549 0-1-.451-1-1v-2c0-.549.451-1 1-1Zm-5 0c.549 0 1 .451 1 1v2c0 .549-.451 1-1 1-.549 0-1-.451-1-1v-2c0-.549.451-1 1-1Zm3.313-6.185c.136 1.057.403 1.913.878 2.497.442.544 1.134.938 2.344.938 1.573 0 2.292-.337 2.657-.751.384-.435.558-1.15.558-2.361 0-1.14-.243-1.847-.705-2.319-.477-.488-1.319-.862-2.824-1.025-1.487-.161-2.192.138-2.533.529-.269.307-.437.808-.438 1.578v.021c0 .265.021.562.063.893Zm-1.626 0c.042-.331.063-.628.063-.894v-.02c-.001-.77-.169-1.271-.438-1.578-.341-.391-1.046-.69-2.533-.529-1.505.163-2.347.537-2.824 1.025-.462.472-.705 1.179-.705 2.319 0 1.211.175 1.926.558 2.361.365.414 1.084.751 2.657.751 1.21 0 1.902-.394 2.344-.938.475-.584.742-1.44.878-2.497Z"/></symbol>
+  <symbol id="robinhood" viewBox="0 0 24 24"><path d="M2.84 24h.53c.096 0 .192-.048.224-.128C7.591 13.696 11.94 8.656 14.67 5.638c.112-.128.064-.225-.096-.225h-4.88a.55.55 0 0 0-.45.225L5.746 9.972c-.514.642-.642 1.236-.642 2.086v4.43c-1.14 3.194-1.862 5.361-2.392 7.32-.032.125.016.192.129.192M20.447.646c-.754-.802-4.157-.834-5.73-.224a3 3 0 0 0-.786.465 41 41 0 0 0-3.323 3.178c-.112.113-.064.225.097.225h5.409c.497 0 .786.289.786.786v6.1c0 .16.128.208.225.064l3.258-4.254c.53-.69.69-.898.835-1.861.192-1.413.08-3.58-.77-4.479m-6.982 16.18 2.231-3.676a.7.7 0 0 0 .064-.29V6.73c0-.16-.112-.225-.224-.097-3.355 3.74-5.971 7.672-8.395 12.407-.06.12.016.225.16.177l5.009-1.54c.565-.174.882-.402 1.155-.852"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></g></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></g></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12.5 15h4.5"/></g></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></g></symbol>
+  <symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></g></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g></symbol>
+  <symbol id="i-question" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6M12 17h.01"/></g></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></g></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></g></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5l-8.2 8.2a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"/></g></symbol>
+  <symbol id="i-loop" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></g></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></g></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h4v4c0 3-2 5-4 5M14 7h4v4c0 3-2 5-4 5"/></g></symbol>
+  <symbol id="i-nodes" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.2 8.3l3.6 7.4M16.8 8.3l-3.6 7.4M8.5 6h7"/></g></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></g></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></g></symbol>
+</defs></svg>
+
+<style>
+  .b-postman { background: #ff6c37; color: #fff; }
+  .b-market  { background: #0f766e; color: #fff; }
+  .b-mit     { background: #a31f34; color: #fff; }
+  .b-kimi    { background: #141414; color: #fff; }
+  .b-sec     { background: #003e6b; color: #fff; }
+</style>
+
+<style>
+  .b-nvidia  { background: #76b900; color: #0b0b0b; }
+  .b-aws     { background: #232f3e; color: #ff9900; }
+  .b-mcp     { background: #111827; color: #fff; }
+  .b-paper   { background: #7c3aed; color: #fff; }
+  .b-lovable { background: #e11d74; color: #fff; }
+  .b-united  { background: #0a3a8c; color: #fff; }
+</style>
+
+<div class="page">
+
+  <header>
+    <div class="meta">
+      <span>AI Weekly · No. 08</span>
+      <span>Week 46 · Nov 9 – 15, 2026</span>
+    </div>
+    <h1>Fable 5.2 is cheaper per token and dearer per task. Decision models took the small calls. Nvidia lost its CEO the week Anthropic set its price.</h1>
+    <p class="deck">The headlines take 30 seconds, the top five about three minutes, the whole page about eleven. Every item links to its source.</p>
+    <div class="brands" aria-label="Sources this week">
+      <span class="brand"><span class="logo b-anthropic sm" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>Anthropic</span>
+      <span class="brand"><span class="logo b-gemini sm" aria-hidden="true"><svg><use href="#gemini"/></svg></span>Google</span>
+      <span class="brand"><span class="logo b-aws sm" aria-hidden="true"><span class="mono-mark">A</span></span>Amazon, AWS</span>
+      <span class="brand"><span class="logo b-claude sm" aria-hidden="true"><svg><use href="#claude"/></svg></span>Claude Code</span>
+      <span class="brand"><span class="logo b-nvidia sm" aria-hidden="true"><span class="mono-mark">N</span></span>Nvidia</span>
+      <span class="brand"><span class="logo b-sec sm" aria-hidden="true"><span class="mono-mark">S</span></span>SEC</span>
+      <span class="brand"><span class="logo b-market sm" aria-hidden="true"><svg><use href="#i-trend"/></svg></span>CNBC</span>
+      <span class="brand"><span class="logo b-paper sm" aria-hidden="true"><svg><use href="#i-news"/></svg></span>Hugging Face Papers</span>
+      <span class="brand"><span class="logo b-bank sm" aria-hidden="true"><svg><use href="#i-bank"/></svg></span>OCC</span>
+      <span class="brand"><span class="logo b-mcp sm" aria-hidden="true"><span class="mono-mark">M</span></span>MCP</span>
+      <span class="brand"><span class="logo b-github sm" aria-hidden="true"><svg><use href="#github"/></svg></span>GitHub</span>
+      <span class="brand"><span class="logo b-security sm" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>VulnCheck, Crissy Field</span>
+      <span class="brand"><span class="logo b-hn sm" aria-hidden="true"><span class="mono-mark">Y</span></span>Hacker News</span>
+      <span class="brand"><span class="logo b-mic sm" aria-hidden="true"><svg><use href="#i-mic"/></svg></span>Latent Space</span>
+    </div>
+  </header>
+
+  <section class="top" aria-labelledby="top-h">
+    <h2 id="top-h">This week</h2>
+    <ol>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-anthropic" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>
+            <span class="who"><b>Anthropic, Artificial Analysis, AINews</b> · Nov 9 and 10</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-cpu"/></svg>Models</span>
+          </div>
+          <h3>Claude Fable 5.2 costs a fifth less per token and more per task, and it rejects requests that edit history</h3>
+          <p>Fable 5.2 (<code>claude-fable-5-2</code>) is $8 and $40 per million tokens, down from $10 and $50; Mythos 5.2 is the same model for verified organizations. Anthropic still says to start with Opus 5.5. Artificial Analysis ranks Fable first at $26.54 a task, against $10.04 for Opus 5.5. A request that edits <code>system</code>, <code>tools</code> or an earlier message and then returns a thinking block gets a 400; so does forced <code>tool_choice</code>.</p>
+          <p class="forus"><b>For us:</b> keep Opus 5.5 as the default and try Fable at high effort on the hardest spec work. It needs 30-day retention, so zero-retention clients are out. Catch-up list below.</p>
+          <div class="src"><a href="https://www.anthropic.com/news/claude-fable-and-mythos-5-2">Anthropic: Fable 5.2 and Mythos 5.2</a> · <a href="https://platform.claude.com/docs/en/models/fable-5-2/whats-new-fable-5-2">What's new in Fable 5.2</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">Release notes</a> · <a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-gemini" aria-hidden="true"><svg><use href="#gemini"/></svg></span>
+            <span class="who"><b>Google, Amazon Strands, Hacker News</b> · Nov 9 to 11 · update to W41</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-nodes"/></svg>Agents</span>
+          </div>
+          <h3>Google shipped a Decisions API, and Amazon says a small decision model replaced Sonnet 4.6 at 98% less cost</h3>
+          <p><code>gemini-decision-1</code> answers up to 1,000 yes/no, choice or rubric questions per request, each with a confidence, for $0.10 per million input tokens and nothing for output. Amazon's Strands team moved ticket labelling across 20 categories from Sonnet 4.6 to its open Strands Decider: $0.0222 to about $0.0005 a ticket, 4,215 ms to 897 ms. The post gives no accuracy numbers (Hacker News, 732 points).</p>
+          <p class="forus"><b>For us:</b> the developer deep item. <code>pip install strands-decider</code>, then shadow-run it beside Claude on one routing or gating step. A score carries no explanation, so keep the audit trail. Catch-up list below.</p>
+          <div class="src"><a href="https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/">Google: Gemini Decisions API</a> · <a href="https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/">Strands: replacing Sonnet 4.6</a> · <a href="https://github.com/strands-labs/strands-decider">strands-decider repo</a> · <a href="https://news.ycombinator.com/item?id=50436640">Hacker News (732 points)</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-claude" aria-hidden="true"><svg><use href="#claude"/></svg></span>
+            <span class="who"><b>Claude Code</b> · Nov 12</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-terminal"/></svg>Dev tools</span>
+          </div>
+          <h3>Claude Code can now write JavaScript that calls its tools, and auto mode reviews the script, not each call</h3>
+          <p>Code Mode (experimental, 2.1.323) is opt-in with <code>CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1</code>: Claude writes one script that makes many tool calls. Deny and ask rules and <code>PreToolUse</code> hooks still apply to each call, but auto mode's classifier "doesn't see values computed at run time". It does not work with <code>-p</code>, the Agent SDK, gateways, Bedrock or zero data retention.</p>
+          <p class="forus"><b>For us:</b> try it in a terminal on a many-file task, and log each script with a <code>PreToolUse</code> hook that matches <code>REPL</code>. Our CI and SDK harnesses cannot use it yet.</p>
+          <div class="src"><a href="https://code.claude.com/docs/en/code-mode">Claude Code docs: Code Mode</a> · <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-nvidia" aria-hidden="true"><span class="mono-mark">N</span></span>
+            <span class="who"><b>Nvidia, SEC, CNBC</b> · Nov 10 and 12</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-trend"/></svg>Market</span>
+          </div>
+          <h3>Jensen Huang resigned from Nvidia, and Anthropic set its IPO at $70 to $78 a share, pricing Wednesday</h3>
+          <p>Nvidia's filing of Nov 12: Huang resigned as president, CEO and director, effective immediately, with CFO Colette Kress as interim CEO and no reason given. CNBC reports the board moved after reports about his personal relationships, one with a businesswoman linked to a Nvidia customer. Anthropic's Nov 10 amendment offers 825 million shares on Nasdaq as ANT, about $1.4 trillion at the top of the range (CNBC, secondary).</p>
+          <p class="forus"><b>For us:</b> nothing to build. The chip supplier and the model vendor under our stack are both next week's headlines; a swappable model layer is our answer on vendor concentration.</p>
+          <div class="src"><a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm">Nvidia 8-K exhibit</a> · <a href="https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html">CNBC: Huang</a> · <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0002130357&amp;type=S-1">EDGAR: Anthropic filings</a> · <a href="https://www.cnbc.com/2026/11/10/anthropic-sets-price-range-of-70-to-78-in-upcoming-ipo.html">CNBC: Anthropic range</a> · <a href="https://ipo.anthropic.com/us/">Anthropic IPO page</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-paper" aria-hidden="true"><svg><use href="#i-news"/></svg></span>
+            <span class="who"><b>Hugging Face Papers, King &amp; Spalding on the OCC</b> · Nov 5 to 9</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-bank"/></svg>Fintech</span>
+          </div>
+          <h3>With no attacker present, frontier agents overstep their authorization in 43% to 61% of runs</h3>
+          <p>The Authorization Drift Benchmark ran 13 models through 648 tasks in seven domains: frontier drift rates were 0.43 to 0.61, "dominated by early data over-collection", though 86.18% of tasks have a clean path. FinCosmos gave four coding agents 150 backtesting sessions; "no session is accepted". King &amp; Spalding's reading of the OCC framework (secondary): treat agent identities like privileged users, with transaction limits and a kill switch.</p>
+          <p class="forus"><b>For us:</b> scope each MCP tool to the least data its step needs, log what was fetched against what was used, and let deterministic checks, not a model's sign-off, decide what ships.</p>
+          <div class="src"><a href="https://huggingface.co/papers/2611.09113">Authorization Drift paper</a> · <a href="https://huggingface.co/papers/2611.07464">FinCosmos paper</a> · <a href="https://www.kslaw.com/Insights/Articles/The-OCC-Issues-Examiner-Framework-for-Bank-Use-of-AI">King &amp; Spalding on the OCC framework</a> · <a href="https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-54.html">OCC Bulletin 2026-54</a></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="trend" aria-labelledby="trend-h">
+    <h2 id="trend-h"><svg class="si" aria-hidden="true"><use href="#i-trend"/></svg>The trend</h2>
+    <p class="claim">The best model got cheaper per token and dearer per task, so the week's work was deciding which calls deserve it.</p>
+    <p>Fable 5.2 lowers the list price and raises the bill, and Anthropic's own advice is to start with Opus. At the other end, <span class="term">decision models</span> answer closed questions for a tenth of a dollar per million tokens, and Amazon moved a production workload onto one. Code Mode folds many tool calls into one script, which moves review from the call to the code. Each change shifts where control sits, and the week's research says the model will take what it can reach: <span class="term">authorization drift</span> happens with no attacker. For our harness: route by task, a decision model for gates, Opus for daily work, Fable for the hardest runs, and scope permissions at the tool.</p>
+  </section>
+
+  <section class="deep" id="decisions" aria-labelledby="decisions-h">
+    <div class="deep-head">
+      <span class="logo b-gemini lg" aria-hidden="true"><svg><use href="#gemini"/></svg></span>
+      <h2 id="decisions-h">Catch up: decision models</h2>
+    </div>
+    <span class="date">Jev Sep 15 · Strands post Nov 9 · Google Nov 11</span>
+    <p><b>What it is.</b> A decision model takes a state and closed questions and returns probabilities, not text. Jev started the category in September; W41 covered OpenAI's entry. This week Google joined and Amazon published a production swap.</p>
+    <p class="forus">Use it where the harness asks a yes/no or pick-one question many times a day; keep a generative model where someone must read the reason.</p>
+    <ol class="reading">
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-flag"/></svg>Start here</span><a href="https://simonwillison.net/2026/Sep/21/jev/">Willison: Jev introduces a new shape of LLM</a><span class="why">The idea in one post: state in, probabilities out, $0.042 per million tokens, weak with numbers and dates. 5 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-terminal"/></svg>Try it</span><a href="https://github.com/strands-labs/strands-decider">strands-decider on GitHub</a><span class="why">Apache 2.0. <code>pip install strands-decider</code>, then <code>strands-decider ask</code> with a <code>--state</code> and a <code>--choice</code>. 10 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-layers"/></svg>Go deeper</span><a href="https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/">Strands: Amazon replaces Sonnet 4.6</a><span class="why">The <code>BEDROCK</code> / <code>DUAL</code> / <code>DECIDER</code> shadow switch, and why they sort JSON keys: key order moved probabilities by up to 0.19. 8 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-layers"/></svg>Go deeper</span><a href="https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/">Google: Gemini Decisions API</a><span class="why">Text, image, audio, video and PDF input; 150 to 250 ms; a no-cost tier in AI Studio. 6 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-question"/></svg>The skeptic view</span><a href="https://news.ycombinator.com/item?id=50436640">Hacker News on the Amazon post</a><span class="why">floro: "There is zero reason to use an LLM as a classifier." troyvit: no accuracy in the article. 10 min.</span></li>
+    </ol>
+  </section>
+
+  <section class="deep" id="fable" aria-labelledby="fable-h">
+    <div class="deep-head">
+      <span class="logo b-anthropic lg" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>
+      <h2 id="fable-h">Catch up: Fable 5.2</h2>
+    </div>
+    <span class="date">Launch Nov 9 · Willison and AINews Nov 10</span>
+    <p><b>What it is.</b> Anthropic's top public model, cheaper per token than 5.1. The argument is cost per task: it works longer, and Anthropic staff advise against max effort.</p>
+    <p class="forus">Read the breaking changes before the benchmarks; a harness that edits history fails before quality matters.</p>
+    <ol class="reading">
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-flag"/></svg>Start here</span><a href="https://www.anthropic.com/news/claude-fable-and-mythos-5-2">Anthropic: Claude Fable 5.2 and Mythos 5.2</a><span class="why">Prices, who gets Mythos, Anthropic's own table: FrontierSWE v2 69.9% against 62.3% for Opus 5.5. 8 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-terminal"/></svg>Try it</span><a href="https://platform.claude.com/docs/en/models/fable-5-2/whats-new-fable-5-2">What's new in Claude Fable 5.2</a><span class="why">The four breaking changes, the <code>"drop_block"</code> stopgap, and a five-step migration list. 10 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-layers"/></svg>Go deeper</span><a href="https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/">Willison: prompting Claude Fable 5.2</a><span class="why">One sentence saying the model owns the code lifts consolidation of duplicates from under 10% of runs to about 75% (Anthropic's test). 3 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-question"/></svg>The skeptic view</span><a href="https://latent.space/p/ainews-fable-5-2-retakes-world-1-llm-spot-as-ant-ipo-roadshow-begins/">AINews: Fable 5.2 retakes the top spot</a><span class="why">SemiAnalysis: cost per task up 31%, $67.16 to $88.15. Alex Albert: "Start on medium or high effort". 15 min.</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="more-h">
+    <h2 id="more-h">Also this week</h2>
+    <ul class="group">
+      <li>
+        <span class="logo b-claude" aria-hidden="true"><svg><use href="#claude"/></svg></span>
+        <span class="date">2026-11-09 to 11-13 · Update · Claude Code 2.1.321 to 2.1.325: sandboxed Bash asks again, scheduled skills prompt, the email check widens</span>
+        <p>2.1.325: sandboxed Bash commands "follow the normal permission flow by default"; set <code>sandbox.autoAllowBashIfSandboxed: true</code> to keep the old behaviour. Scheduled tasks and <code>/loop</code> ask before running a skill that declares <code>allowed-tools</code> or hooks; add <code>Skill(name)</code> to <code>permissions.allow</code>. The account-email check now also refuses the email in scripts, file writes, web fetches and MCP calls; issue #107757 is still open, with no post-mortem. 2.1.323: a "don't ask again" rule that looks like it holds a secret lasts for the session only.</p>
+        <p class="forus"><b>For us:</b> unattended runs that relied on sandbox auto-allow or scheduled skills will now wait at a prompt; set both before upgrading CI.</p>
+        <div class="src"><a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a> · <a href="https://github.com/anthropics/claude-code/issues/107757">Issue #107757</a></div>
+      </li>
+      <li>
+        <span class="logo b-anthropic" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>
+        <span class="date">2026-11-12 · Self-hosted Claude Managed Agents: the service, sessions and history on your own infrastructure</span>
+        <p>You run the server (<code>cma-server</code>), PostgreSQL 16 or later and the workers; model calls go to Anthropic by default, or to Bedrock, Google Cloud, Foundry or your own gateway. Each model call still sends the conversation, tool inputs and results included, to that provider. Access is through your Anthropic account team.</p>
+        <p class="forus"><b>For us:</b> a path to keeping agent session history inside a client's network; the model call remains the egress to review.</p>
+        <div class="src"><a href="https://platform.claude.com/docs/en/managed-agents/self-hosted">Self-hosted Managed Agents</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">Release notes</a></div>
+      </li>
+      <li>
+        <span class="logo b-gemini" aria-hidden="true"><svg><use href="#gemini"/></svg></span>
+        <span class="date">2026-11-10 and 11-12 · Gemini 4 Carbon and Hydrogen are generally available; Carbon and Argon double in price on Dec 1</span>
+        <p><code>gemini-4-carbon</code> is $2 and $10 per million tokens through Nov 30, then $4 and $20; Google says Argon "remains the ideal choice for the majority of software engineering". <code>gemini-4-hydrogen</code> is $1.50 and $7.50, flat across a 1M context, with a new <code>xhigh</code> thinking level. Google's claims: Carbon passes 92% of an agentic honesty benchmark against 70% for Argon; Hydrogen leads Vals Tax Agent Bench at 52.3%.</p>
+        <p class="forus"><b>For us:</b> two weeks to run Carbon against Claude on our own evals at half its later price.</p>
+        <div class="src"><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/">Google: Gemini 4 Carbon</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/">Google: Gemini 4 Hydrogen</a> · <a href="https://simonwillison.net/2026/Nov/12/llm-gemini/">Willison on the prices</a> · <a href="https://aistudio.google.com/docs/changelog">Gemini API changelog</a></div>
+      </li>
+      <li>
+        <span class="logo b-mcp" aria-hidden="true"><span class="mono-mark">M</span></span>
+        <span class="date">2026-11-10 and 11-12 · Agent plumbing: MCP drafts file transfer outside the context; Cognito adds token exchange; AgentCore starts in under two seconds</span>
+        <p>The draft <code>io.modelcontextprotocol/files</code> extension marks file arguments with <code>x-mcp-file</code> and moves bytes over HTTPS upload and download URLs; clients must refuse redirects. No reference implementation yet. Amazon Cognito now supports OAuth token exchange (RFC 8693): an MCP server swaps a user's token for a narrower one, and an <code>act</code> claim names the intermediary. New AgentCore runtimes start a 2 GB image "under 2 seconds at P75", from 29.7.</p>
+        <p class="forus"><b>For us:</b> statements and reports can move outside the model's context, and the <code>act</code> claim is the audit record of an agent acting for an advisor.</p>
+        <div class="src"><a href="https://blog.modelcontextprotocol.io/posts/exploring-file-uploads-and-downloads-in-mcp/">MCP blog: file uploads and downloads</a> · <a href="https://aws.amazon.com/about-aws/whats-new/2026/11/cognito-token-exchange/">AWS: Cognito token exchange</a> · <a href="https://aws.amazon.com/about-aws/whats-new/2026/11/new-agentcore-runtime-default/">AWS: AgentCore runtime</a></div>
+      </li>
+      <li>
+        <span class="logo b-gemini" aria-hidden="true"><svg><use href="#gemini"/></svg></span>
+        <span class="date">2026-11-10 · DeepMind's AlphaProof Code: agents proved Signal's compiled protocol code in Lean</span>
+        <p>Agents on Gemini Carbon wrote "over six million lines of Lean" in four weeks; people reviewed every formal specification and the 1% of the codebase the checker did not cover. Two old bugs put back in produced machine-checked proofs that the code was insecure. The proof artifacts are open; the tool is not.</p>
+        <p class="forus"><b>For us:</b> person writes the spec, agent does the work, a checker decides: the shape of our spec pipeline, at its limit.</p>
+        <div class="src"><a href="https://deepmind.google/blog/introducing-alphaproof-code/">DeepMind: AlphaProof Code</a></div>
+      </li>
+    </ul>
+    <ul class="group">
+      <li>
+        <span class="logo b-security" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>
+        <span class="date">2026-11-09 and 11-14 · Security: 24,664 Lovable-built sites served database records with no login; an outside count of Anthropic's AI-found bugs</span>
+        <p>Crissy Field analysed 159,041 Lovable projects: 24,664 sites sent Supabase records on page load without a login, and 7,403 of them exposed tables with email addresses; the authors say the sample is not representative (Hacker News, 963 points). VulnCheck counts 442 CVEs credited to Anthropic, two exploited in the wild; of 34 published curl reports, 19 were rejected. Anthropic's ledger lists 37,966 findings and 217 fixed.</p>
+        <p class="forus"><b>For us:</b> generated apps need an access-control test before any client data, and AI-found bug reports arrive faster than maintainers can fix them.</p>
+        <div class="src"><a href="https://www.crissyfield.de/research/lovable-en/">Crissy Field: Lovable</a> · <a href="https://www.vulncheck.com/blog/anthropic-glasswing-november-update">VulnCheck</a></div>
+      </li>
+      <li>
+        <span class="logo b-united" aria-hidden="true"><span class="mono-mark">U</span></span>
+        <span class="date">2026-11-11 · United Airlines bans third-party AI agents from booking for travelers</span>
+        <p>United will "prohibit use by unauthorized, third-party personal AI agents", on its own platforms and through agencies, saying that "sharing account credentials" with assistants "can expose sensitive information" (CBS News; no effective date). Southwest lets ChatGPT users view its inventory.</p>
+        <p class="forus"><b>For us:</b> the same line banks drew in W43; expect custodians to want agents through an authorized channel, not a shared login.</p>
+        <div class="src"><a href="https://www.cbsnews.com/news/united-airlines-bans-ai-agents-booking-flights/">CBS News</a></div>
+      </li>
+    </ul>
+    <ul class="group">
+      <li>
+        <span class="logo b-mic" aria-hidden="true"><svg><use href="#i-mic"/></svg></span>
+        <span class="date">2026-11-09 and 11-10 · Latent Space: Handshake's simulated investment bank, 164 min; Resend on designing an MCP server, 86 min</span>
+        <p>Handshake AI: "Inside a simulated investment bank" at 1:18:56, how a banker grades the agent's spreadsheet at 1:31:18, "How an agent gamed the Excel grader" at 1:46:41. Resend's Zeno Rocha, "Designing the MCP" at 37:55: the server grew from about 20 tools to more than 80, and one result was "too large to fit in context". Topics from the pages, not listened.</p>
+        <p class="forus"><b>For us:</b> the Handshake finance chapters are a reference for grading agent-built spreadsheets; Resend shows result size matters more than tool count.</p>
+        <div class="src"><a href="https://latent.space/handshake">Latent Space: Handshake AI</a> · <a href="https://latent.space/p/resend/">Latent Space: Resend</a></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ahead" aria-labelledby="ahead-h">
+    <h2 id="ahead-h" style="margin:0">Coming up</h2>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Today, Nov 16.</b> GitHub's second <code>pull_request_target</code> brownout, 16:00 to 18:00 UTC. Copilot drops Claude Opus 4.8, Claude Opus 5 and GPT-5.6 Terra.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Nov 17.</b> Nvidia reports its third quarter, about 1:20 p.m. Pacific, under an interim CEO.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Nov 18 and 19.</b> Anthropic expects to set its IPO price, then begin trading as ANT.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Nov 20.</b> The UK ICO's agentic-AI call for evidence closes.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Nov 30.</b> Claude Sonnet 4.5 retires on the Claude API; fast mode on Opus 4.8 is removed; Gemini 4 Carbon's introductory price ends.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Dec 1 and 2.</b> Gemini 4 Carbon and Argon double to $4 and $20; Gemini 2.5 Pro and Flash requests reroute. GitHub blocks <code>pull_request_target</code> by default on public repos.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Dec 14.</b> Copilot drops Claude Fable 5, Claude Haiku 4.5, Gemini 4 Argon and three others.</span></p>
+    <div class="src"><a href="https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2">GitHub: pull_request_target</a> · <a href="https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november">Copilot, Nov 16</a> · <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/">Nvidia</a> · <a href="https://ipo.anthropic.com/us/">Anthropic IPO page</a> · <a href="https://www.pinsentmasons.com/out-law/news/agentic-ai-ico-signals-its-data-protection-priorities">Pinsent Masons on the ICO call</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">Claude release notes</a> · <a href="https://aistudio.google.com/docs/changelog">Gemini changelog</a> · <a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december">Copilot, Dec 14</a></div>
+  </section>
+
+  <details>
+    <summary>All sources this week</summary>
+    <ul>
+      <li><a href="https://www.anthropic.com/news/claude-fable-and-mythos-5-2">Anthropic: Claude Fable 5.2 and Mythos 5.2</a></li>
+      <li><a href="https://platform.claude.com/docs/en/models/fable-5-2/whats-new-fable-5-2">Claude docs: what's new in Claude Fable 5.2</a></li>
+      <li><a href="https://platform.claude.com/docs/en/release-notes/overview">Claude platform release notes</a></li>
+      <li><a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis: model leaderboard</a></li>
+      <li><a href="https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/">Simon Willison: prompting Claude Fable 5.2</a></li>
+      <li><a href="https://latent.space/p/ainews-fable-5-2-retakes-world-1-llm-spot-as-ant-ipo-roadshow-begins/">AINews: Fable 5.2 retakes the top spot</a></li>
+      <li><a href="https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/">Google: Gemini Decisions API</a></li>
+      <li><a href="https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/">Strands Agents: Amazon saves millions by replacing Sonnet 4.6 with Strands Decider</a></li>
+      <li><a href="https://github.com/strands-labs/strands-decider">GitHub: strands-labs/strands-decider</a></li>
+      <li><a href="https://news.ycombinator.com/item?id=50436640">Hacker News: Amazon replaces Sonnet 4.6 with Strands Decider</a></li>
+      <li><a href="https://simonwillison.net/2026/Sep/21/jev/">Simon Willison: Jev introduces a new shape of LLM</a></li>
+      <li><a href="https://code.claude.com/docs/en/code-mode">Claude Code docs: Code Mode</a></li>
+      <li><a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></li>
+      <li><a href="https://github.com/anthropics/claude-code/issues/107757">GitHub: claude-code issue #107757</a></li>
+      <li><a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm">SEC: Nvidia 8-K exhibit, CEO transition</a></li>
+      <li><a href="https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html">CNBC: Jensen Huang resigns</a></li>
+      <li><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0002130357&amp;type=S-1">SEC EDGAR: Anthropic S-1 filings</a></li>
+      <li><a href="https://www.cnbc.com/2026/11/10/anthropic-sets-price-range-of-70-to-78-in-upcoming-ipo.html">CNBC: Anthropic sets price range of $70 to $78</a></li>
+      <li><a href="https://ipo.anthropic.com/us/">Anthropic IPO page</a></li>
+      <li><a href="https://huggingface.co/papers/2611.09113">Paper: Authorization Drift in LLM Agents</a></li>
+      <li><a href="https://huggingface.co/papers/2611.07464">Paper: FinCosmos</a></li>
+      <li><a href="https://www.kslaw.com/Insights/Articles/The-OCC-Issues-Examiner-Framework-for-Bank-Use-of-AI">King &amp; Spalding: the OCC's examiner framework for bank use of AI</a></li>
+      <li><a href="https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-54.html">OCC Bulletin 2026-54</a></li>
+      <li><a href="https://platform.claude.com/docs/en/managed-agents/self-hosted">Claude docs: self-hosted Claude Managed Agents</a></li>
+      <li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/">Google: Gemini 4 Carbon now available</a></li>
+      <li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/">Google: introducing Gemini 4 Hydrogen</a></li>
+      <li><a href="https://simonwillison.net/2026/Nov/12/llm-gemini/">Simon Willison: Gemini 4 Hydrogen pricing</a></li>
+      <li><a href="https://aistudio.google.com/docs/changelog">Gemini API changelog</a></li>
+      <li><a href="https://blog.modelcontextprotocol.io/posts/exploring-file-uploads-and-downloads-in-mcp/">MCP blog: exploring file uploads and downloads in MCP</a></li>
+      <li><a href="https://aws.amazon.com/about-aws/whats-new/2026/11/cognito-token-exchange/">AWS: Amazon Cognito token exchange</a></li>
+      <li><a href="https://aws.amazon.com/about-aws/whats-new/2026/11/new-agentcore-runtime-default/">AWS: AgentCore next-generation runtime</a></li>
+      <li><a href="https://deepmind.google/blog/introducing-alphaproof-code/">Google DeepMind: AlphaProof Code</a></li>
+      <li><a href="https://www.crissyfield.de/research/lovable-en/">Crissy Field: many Lovable apps expose sensitive data</a></li>
+      <li><a href="https://www.vulncheck.com/blog/anthropic-glasswing-november-update">VulnCheck: tracking Anthropic-discovered vulnerabilities</a></li>
+      <li><a href="https://www.cbsnews.com/news/united-airlines-bans-ai-agents-booking-flights/">CBS News: United Airlines bans AI agents from booking flights</a></li>
+      <li><a href="https://latent.space/handshake">Latent Space: Handshake AI</a></li>
+      <li><a href="https://latent.space/p/resend/">Latent Space: Designing for Agents, Zeno Rocha</a></li>
+      <li><a href="https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2">GitHub: pull_request_target blocked by default December 2</a></li>
+      <li><a href="https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november">GitHub: Copilot model deprecations Nov 16</a></li>
+      <li><a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december">GitHub: Copilot model deprecations Dec 14</a></li>
+      <li><a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/">Nvidia: third-quarter results call</a></li>
+      <li><a href="https://www.pinsentmasons.com/out-law/news/agentic-ai-ico-signals-its-data-protection-priorities">Pinsent Masons: the ICO's agentic-AI call for evidence</a></li>
+    </ul>
+  </details>
+
+  <footer>
+    <p>Public sources only. Compiled by Hai Wang with Claude. Questions or a signal I missed: reply in the AI Labs chat. Logos are trademarks of their owners and mark the source of each item; brand icons from Simple Icons (CC0).</p>
+    <p><a href="../">All AI Weekly issues</a></p>
+  </footer>
+
+</div>
+</html>
