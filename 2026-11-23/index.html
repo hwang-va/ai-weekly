@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>AI Weekly W47</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --ink: #111827;
+    --muted: #586174;
+    --faint: #dfe3ea;
+    --accent: #2447b3;
+    --accent-soft: #e8edfb;
+    --forus: #0f5f4a;
+    --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+    --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0e1117;
+      --surface: #161b24;
+      --ink: #e6e9ef;
+      --muted: #9aa3b4;
+      --faint: #2a3140;
+      --accent: #93a9ff;
+      --accent-soft: #1d2640;
+      --forus: #6fd3b3;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0e1117;
+    --surface: #161b24;
+    --ink: #e6e9ef;
+    --muted: #9aa3b4;
+    --faint: #2a3140;
+    --accent: #93a9ff;
+    --accent-soft: #1d2640;
+    --forus: #6fd3b3;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    padding-inline: 16px;
+    padding-block: 32px 56px;
+  }
+  .page { max-width: 720px; margin: 0 auto; display: grid; gap: 40px; }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  code { font-family: var(--mono); font-size: 0.92em; }
+
+  .meta, .date, .src {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+  }
+
+  /* Masthead */
+  header { display: grid; gap: 10px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(34px, 7vw, 46px);
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .deck { margin: 0; color: var(--muted); max-width: 60ch; }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  /* Top section */
+  .top {
+    background: var(--surface);
+    border: 1px solid var(--faint);
+    border-radius: 6px;
+    padding: 22px 22px 8px;
+  }
+  .top ol { list-style: none; margin: 0; padding: 0; counter-reset: rank; }
+  .top li {
+    counter-increment: rank;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 0 12px;
+    padding-block: 14px;
+    border-top: 1px solid var(--faint);
+  }
+  .top li:first-child { border-top: 0; padding-top: 0; }
+  .top li::before {
+    content: counter(rank);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--accent);
+  }
+  .top h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.2;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .top p { margin: 0 0 6px; max-width: 65ch; }
+
+  .forus { color: var(--forus); font-weight: 500; }
+  .forus b { font-weight: 600; }
+
+  .src { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 2px; }
+
+  /* Trend */
+  .trend p { margin: 0 0 12px; max-width: 65ch; }
+  .trend .claim {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.2;
+    text-wrap: balance;
+    margin-bottom: 12px;
+  }
+  .term { background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; }
+
+  /* Details */
+  .group { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .group + .group { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--faint); }
+  .group li { display: grid; gap: 4px; }
+  .group p { margin: 0; max-width: 65ch; }
+  .recap { font-style: italic; }
+
+  .deep {
+    background: var(--surface);
+    border: 1px solid var(--faint);
+    border-radius: 6px;
+    padding: 22px;
+    display: grid;
+    gap: 10px;
+    scroll-margin-top: 16px;
+  }
+  .deep h2 { margin: 0; }
+  .deep p { margin: 0; max-width: 65ch; }
+  .reading { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 14px; }
+  .reading li {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 2px 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--faint);
+  }
+  .reading .step {
+    grid-row: span 2;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+  .reading a { font-weight: 500; }
+  .reading .why { font-size: 14.5px; color: var(--muted); }
+  @media (max-width: 480px) {
+    .deep { padding: 18px 16px; }
+    .reading li { grid-template-columns: 1fr; }
+    .reading .step { grid-row: auto; }
+  }
+
+  .ahead {
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 16px 18px;
+    display: grid;
+    gap: 4px;
+  }
+  .ahead p { margin: 0; }
+
+  /* Sources */
+  details { border-top: 1px solid var(--faint); padding-top: 14px; }
+  summary {
+    cursor: pointer;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  details ul { margin: 12px 0 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14.5px; }
+
+  footer { font-size: 13.5px; color: var(--muted); }
+  footer p { margin: 0; }
+
+  @media (max-width: 480px) {
+    .top { padding: 18px 16px 4px; }
+    .top li { grid-template-columns: 22px 1fr; gap: 0 10px; }
+    .top h3 { font-size: 19px; }
+    .trend .claim { font-size: 22px; }
+  }
+
+  /* Vivid layer: brand tiles mark each source, pills mark the topic, icons mark reading steps */
+  :root { --tile-ring: rgba(17, 24, 39, 0.08); --pill-bg: #eef1f6; --sec: #b42318; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --tile-ring: rgba(255, 255, 255, 0.16); --pill-bg: #1e2532; --sec: #ff8a7a; }
+  }
+  :root[data-theme="dark"] { --tile-ring: rgba(255, 255, 255, 0.16); --pill-bg: #1e2532; --sec: #ff8a7a; }
+
+  .logo {
+    width: 30px; height: 30px; flex: none;
+    border-radius: 8px;
+    display: inline-grid; place-items: center;
+    box-shadow: inset 0 0 0 1px var(--tile-ring);
+  }
+  .logo svg { width: 17px; height: 17px; fill: currentColor; }
+  .logo.sm { width: 22px; height: 22px; border-radius: 6px; }
+  .logo.sm svg { width: 13px; height: 13px; }
+  .logo.lg { width: 40px; height: 40px; border-radius: 10px; }
+  .logo.lg svg { width: 22px; height: 22px; }
+  .mono-mark { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1; }
+
+  /* Fixed brand pairs: each background carries its own foreground, so they read in both themes */
+  .b-openai    { background: #0d0d0d; color: #ffffff; }
+  .b-claude    { background: #d97757; color: #ffffff; }
+  .b-anthropic { background: #191919; color: #f0eee6; }
+  .b-gemini    { background: linear-gradient(135deg, #4285f4, #9b72cb 60%, #d96570); color: #ffffff; }
+  .b-github,
+  .b-copilot   { background: #24292f; color: #ffffff; }
+  .b-robinhood { background: #ccff00; color: #0b0b0b; }
+  .b-security  { background: #b42318; color: #ffffff; }
+  .b-bank      { background: #1f4e79; color: #ffffff; }
+  .b-pi        { background: #6d28d9; color: #ffffff; }
+  .b-clip      { background: #475467; color: #ffffff; }
+  .b-loop      { background: #0e7490; color: #ffffff; }
+  .b-mic       { background: #be185d; color: #ffffff; }
+  .b-cal       { background: var(--accent); color: var(--surface); }
+
+  /* In-this-issue strip */
+  .brands { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .brand {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 3px 11px 3px 3px;
+    border: 1px solid var(--faint); border-radius: 999px;
+    background: var(--surface);
+    font-size: 13.5px; font-weight: 500;
+  }
+  .brand .logo { border-radius: 999px; }
+
+  /* Kicker row: logo, who and when, topic */
+  .kicker { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-bottom: 8px; }
+  .kicker .who { font-family: var(--mono); font-size: 12.5px; color: var(--muted); letter-spacing: 0.02em; }
+  .kicker .who b { color: var(--ink); font-weight: 500; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 9px 2px 7px; border-radius: 999px;
+    background: var(--pill-bg); color: var(--muted);
+    font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .pill.sec { color: var(--sec); }
+  .pill svg, .si { width: 14px; height: 14px; flex: none; }
+
+  .deep-head { display: flex; align-items: center; gap: 12px; }
+  .reading .step { display: flex; align-items: flex-start; gap: 6px; }
+  .reading .step .si { margin-top: 1px; }
+  h2 .si { vertical-align: -2px; margin-right: 6px; }
+
+  .group li { grid-template-columns: 30px minmax(0, 1fr); gap: 4px 12px; }
+  .group li > .logo { grid-row: span 4; }
+  .group li > :not(.logo) { grid-column: 2; min-width: 0; }
+
+  .ahead p { display: flex; align-items: flex-start; gap: 10px; }
+  .ahead p .logo { margin-top: 1px; }
+  .ahead p.forus, .ahead .src { padding-left: 32px; }
+  .ahead p.forus { display: block; }
+
+  @media (max-width: 480px) {
+    .group li { grid-template-columns: 26px minmax(0, 1fr); gap: 4px 10px; }
+    .group li > .logo { width: 26px; height: 26px; }
+  }
+  .b-cloudflare { background: #f38020; color: #fff; }
+  .b-mistral { background: #ffd800; color: #111; }
+  .b-hn { background: #ff6600; color: #fff; }
+  .b-wiki { background: #006699; color: #fff; }
+  .b-lc { background: #1c3c3c; color: #fff; }
+  .b-cursor { background: #111; color: #fff; }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="openai" viewBox="0 0 24 24"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></symbol>
+  <symbol id="claude" viewBox="0 0 24 24"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></symbol>
+  <symbol id="anthropic" viewBox="0 0 24 24"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></symbol>
+  <symbol id="gemini" viewBox="0 0 24 24"><path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></symbol>
+  <symbol id="github" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+  <symbol id="copilot" viewBox="0 0 24 24"><path d="M23.922 16.997C23.061 18.492 18.063 22.02 12 22.02 5.937 22.02.939 18.492.078 16.997A.641.641 0 0 1 0 16.741v-2.869a.883.883 0 0 1 .053-.22c.372-.935 1.347-2.292 2.605-2.656.167-.429.414-1.055.644-1.517a10.098 10.098 0 0 1-.052-1.086c0-1.331.282-2.499 1.132-3.368.397-.406.89-.717 1.474-.952C7.255 2.937 9.248 1.98 11.978 1.98c2.731 0 4.767.957 6.166 2.093.584.235 1.077.546 1.474.952.85.869 1.132 2.037 1.132 3.368 0 .368-.014.733-.052 1.086.23.462.477 1.088.644 1.517 1.258.364 2.233 1.721 2.605 2.656a.841.841 0 0 1 .053.22v2.869a.641.641 0 0 1-.078.256Zm-11.75-5.992h-.344a4.359 4.359 0 0 1-.355.508c-.77.947-1.918 1.492-3.508 1.492-1.725 0-2.989-.359-3.782-1.259a2.137 2.137 0 0 1-.085-.104L4 11.746v6.585c1.435.779 4.514 2.179 8 2.179 3.486 0 6.565-1.4 8-2.179v-6.585l-.098-.104s-.033.045-.085.104c-.793.9-2.057 1.259-3.782 1.259-1.59 0-2.738-.545-3.508-1.492a4.359 4.359 0 0 1-.355-.508Zm2.328 3.25c.549 0 1 .451 1 1v2c0 .549-.451 1-1 1-.549 0-1-.451-1-1v-2c0-.549.451-1 1-1Zm-5 0c.549 0 1 .451 1 1v2c0 .549-.451 1-1 1-.549 0-1-.451-1-1v-2c0-.549.451-1 1-1Zm3.313-6.185c.136 1.057.403 1.913.878 2.497.442.544 1.134.938 2.344.938 1.573 0 2.292-.337 2.657-.751.384-.435.558-1.15.558-2.361 0-1.14-.243-1.847-.705-2.319-.477-.488-1.319-.862-2.824-1.025-1.487-.161-2.192.138-2.533.529-.269.307-.437.808-.438 1.578v.021c0 .265.021.562.063.893Zm-1.626 0c.042-.331.063-.628.063-.894v-.02c-.001-.77-.169-1.271-.438-1.578-.341-.391-1.046-.69-2.533-.529-1.505.163-2.347.537-2.824 1.025-.462.472-.705 1.179-.705 2.319 0 1.211.175 1.926.558 2.361.365.414 1.084.751 2.657.751 1.21 0 1.902-.394 2.344-.938.475-.584.742-1.44.878-2.497Z"/></symbol>
+  <symbol id="robinhood" viewBox="0 0 24 24"><path d="M2.84 24h.53c.096 0 .192-.048.224-.128C7.591 13.696 11.94 8.656 14.67 5.638c.112-.128.064-.225-.096-.225h-4.88a.55.55 0 0 0-.45.225L5.746 9.972c-.514.642-.642 1.236-.642 2.086v4.43c-1.14 3.194-1.862 5.361-2.392 7.32-.032.125.016.192.129.192M20.447.646c-.754-.802-4.157-.834-5.73-.224a3 3 0 0 0-.786.465 41 41 0 0 0-3.323 3.178c-.112.113-.064.225.097.225h5.409c.497 0 .786.289.786.786v6.1c0 .16.128.208.225.064l3.258-4.254c.53-.69.69-.898.835-1.861.192-1.413.08-3.58-.77-4.479m-6.982 16.18 2.231-3.676a.7.7 0 0 0 .064-.29V6.73c0-.16-.112-.225-.224-.097-3.355 3.74-5.971 7.672-8.395 12.407-.06.12.016.225.16.177l5.009-1.54c.565-.174.882-.402 1.155-.852"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></g></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></g></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12.5 15h4.5"/></g></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></g></symbol>
+  <symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></g></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g></symbol>
+  <symbol id="i-question" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6M12 17h.01"/></g></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></g></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></g></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5l-8.2 8.2a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"/></g></symbol>
+  <symbol id="i-loop" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></g></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></g></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h4v4c0 3-2 5-4 5M14 7h4v4c0 3-2 5-4 5"/></g></symbol>
+  <symbol id="i-nodes" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.2 8.3l3.6 7.4M16.8 8.3l-3.6 7.4M8.5 6h7"/></g></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></g></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></g></symbol>
+</defs></svg>
+
+<style>
+  .b-postman { background: #ff6c37; color: #fff; }
+  .b-market  { background: #0f766e; color: #fff; }
+  .b-mit     { background: #a31f34; color: #fff; }
+  .b-kimi    { background: #141414; color: #fff; }
+  .b-sec     { background: #003e6b; color: #fff; }
+</style>
+
+<style>
+  .b-nvidia  { background: #76b900; color: #0b0b0b; }
+  .b-aws     { background: #232f3e; color: #ff9900; }
+  .b-mcp     { background: #111827; color: #fff; }
+  .b-paper   { background: #7c3aed; color: #fff; }
+  .b-lovable { background: #e11d74; color: #fff; }
+  .b-united  { background: #0a3a8c; color: #fff; }
+</style>
+
+<style>
+  .b-vercel  { background: #000000; color: #fff; }
+  .b-ms      { background: #0067b8; color: #fff; }
+  .b-tm      { background: #3f3f46; color: #fff; }
+</style>
+
+<div class="page">
+
+  <header>
+    <div class="meta">
+      <span>AI Weekly · No. 09</span>
+      <span>Week 47 · Nov 16 – 22, 2026</span>
+    </div>
+    <h1>AI found remote-code bugs in nginx and Java. OpenAI matched Fable's price. Anthropic went public at $83.</h1>
+    <p class="deck">The headlines take 30 seconds, the top five about three minutes, the whole page about ten minutes. Every item links to its source.</p>
+    <div class="brands" aria-label="Sources this week">
+      <span class="brand"><span class="logo b-security sm" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>Wiz, Calif, Aikido</span>
+      <span class="brand"><span class="logo b-openai sm" aria-hidden="true"><svg><use href="#openai"/></svg></span>OpenAI</span>
+      <span class="brand"><span class="logo b-gemini sm" aria-hidden="true"><svg><use href="#gemini"/></svg></span>Google</span>
+      <span class="brand"><span class="logo b-claude sm" aria-hidden="true"><svg><use href="#claude"/></svg></span>Claude Code</span>
+      <span class="brand"><span class="logo b-anthropic sm" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>Anthropic</span>
+      <span class="brand"><span class="logo b-nvidia sm" aria-hidden="true"><span class="mono-mark">N</span></span>Nvidia</span>
+      <span class="brand"><span class="logo b-paper sm" aria-hidden="true"><svg><use href="#i-news"/></svg></span>arXiv</span>
+      <span class="brand"><span class="logo b-github sm" aria-hidden="true"><svg><use href="#github"/></svg></span>GitHub</span>
+      <span class="brand"><span class="logo b-vercel sm" aria-hidden="true"><span class="mono-mark">V</span></span>Vercel AI SDK</span>
+      <span class="brand"><span class="logo b-tm sm" aria-hidden="true"><span class="mono-mark">T</span></span>Thinking Machines</span>
+      <span class="brand"><span class="logo b-market sm" aria-hidden="true"><svg><use href="#i-trend"/></svg></span>AP</span>
+      <span class="brand"><span class="logo b-hn sm" aria-hidden="true"><span class="mono-mark">Y</span></span>Hacker News</span>
+      <span class="brand"><span class="logo b-clip sm" aria-hidden="true"><svg><use href="#i-quote"/></svg></span>Simon Willison, AINews</span>
+      <span class="brand"><span class="logo b-mic sm" aria-hidden="true"><svg><use href="#i-mic"/></svg></span>Latent Space</span>
+    </div>
+  </header>
+
+  <section class="top" aria-labelledby="top-h">
+    <h2 id="top-h">This week</h2>
+    <ol>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-security" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>
+            <span class="who"><b>Wiz, Calif, Hacker News</b> · Nov 17 and 18</span>
+            <span class="pill sec"><svg aria-hidden="true"><use href="#i-shield"/></svg>Security</span>
+          </div>
+          <h3>AI found critical remote-code bugs in nginx and OpenJDK, and both need patching this week</h3>
+          <p>Wiz's Atlas harness found two nginx HTTP/2 flaws (CVE-2026-123633 and CVE-2026-123007, CVSS 9.2 each), one reaching back to version 1.9.5. Fixes are 1.30.7 and 1.31.9; the workaround is <code>http2 off;</code>. Calif says Codex found Java4Shell (CVE-2026-114938: OpenJDK 17.0.6 and later, on x86-64 with AVX-512 VBMI) in about an hour, and "the total token cost was less than $200". Oracle patched it on Nov 17.</p>
+          <p class="forus"><b>For us:</b> check the nginx in front of each service and the JDK under Keycloak-class services on x86, patch both, and plan for a shorter patch window. Catch-up list below.</p>
+          <div class="src"><a href="https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities">Wiz: nginx HTTP/2</a> · <a href="https://calif.io/java4shell/">Calif: Java4Shell</a> · <a href="https://news.ycombinator.com/item?id=50547374">Hacker News (1,515 points)</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-openai" aria-hidden="true"><svg><use href="#openai"/></svg></span>
+            <span class="who"><b>OpenAI, Google, Artificial Analysis, AINews</b> · Nov 17 and 18</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-cpu"/></svg>Models</span>
+          </div>
+          <h3>OpenAI matched Fable's token price with GPT-6.2 Astra, Google added Gemini 4 Neon, and the reviews are mixed</h3>
+          <p><code>gpt-6.2-astra</code> is $8 and $40 per million tokens, 20% under GPT-6 Astra; <code>gpt-6.2-sol</code> stays at $2 and $10. <code>gemini-4-neon</code> is $3 and $15. Artificial Analysis scores Fable 5.2 at 65 for $26.54 a task, Astra at 62 for $4.00 and Neon at 61 for $6.44. Opinion, via AINews: Matt Shumer called the OpenAI models "essentially unusable"; OpenAI's @thsottiaux answered that "some of this is overreacting".</p>
+          <p class="forus"><b>For us:</b> Fable now costs about six times Astra per task. Rerun our own evals on Astra and Neon before anyone changes a default, and read the outputs, not only the scores. Catch-up list below.</p>
+          <div class="src"><a href="https://openai.com/index/introducing-gpt-6-2-astra-sol/">OpenAI: GPT-6.2 Astra and Sol</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/">Google: Gemini 4 Neon</a> · <a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis</a> · <a href="https://latent.space/p/ainews-gpt-6-2-astra-the-2-frontier-model-is-better-and-20-600-cheaper-but-has-mixed-reviews-6-2-sol/">AINews (secondary)</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-claude" aria-hidden="true"><svg><use href="#claude"/></svg></span>
+            <span class="who"><b>Claude Code</b> · Nov 16 to 20 · update to W46</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-terminal"/></svg>Dev tools</span>
+          </div>
+          <h3>Claude Code now refuses more when nobody can answer, and a crashed hook lets a Code Mode call through</h3>
+          <p>Versions 2.1.326 to 2.1.330: some tool calls in bypass permissions mode now "ask for approval, or be denied where no one can be asked"; auto mode ignores allow rules that run any package, like <code>Bash(pnpm dlx *)</code>; more <code>rm</code> commands are refused unattended. In Code Mode (2.1.329), a <code>PreToolUse</code> hook that errors "no longer refuses a script's tool call" unless it sets <code>"onFailure": "block"</code>.</p>
+          <p class="forus"><b>For us:</b> run CI and scheduled jobs on 2.1.330 before upgrading them, and add <code>"onFailure": "block"</code> to every hook that works as a guardrail.</p>
+          <div class="src"><a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-anthropic" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>
+            <span class="who"><b>Anthropic, AP, Nvidia</b> · Nov 17 to 19 · update to W46</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-trend"/></svg>Market</span>
+          </div>
+          <h3>Anthropic priced its IPO at $83, above the range, and closed its first day at $97.17; Nvidia reported $115.8 billion</h3>
+          <p>Anthropic sold 980 million shares at $83.00 on Nov 18, above the $70 to $78 range, and began trading as ANT on Nov 19. AP (secondary): about $81 billion raised, the largest IPO on record, and a first-day close up 17% at $97.17. Nvidia's third-quarter revenue was $115.8 billion, up 103% in a year; interim CEO Colette Kress guides to $130.0 billion, and the CEO search continues.</p>
+          <p class="forus"><b>For us:</b> nothing to build. Our model vendor now reports every quarter, which gives client vendor-risk reviews a public record; a swappable model layer stays our answer on concentration.</p>
+          <div class="src"><a href="https://www.anthropic.com/news/anthropic-prices-initial-public-offering">Anthropic: IPO pricing</a> · <a href="https://www.adn.com/business-economy/2026/11/19/anthropic-begins-trading-as-a-15-trillion-company-in-the-biggest-ipo-on-record/">AP via Anchorage Daily News</a> · <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/">Nvidia: Q3 results</a></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="kicker">
+            <span class="logo b-paper" aria-hidden="true"><svg><use href="#i-news"/></svg></span>
+            <span class="who"><b>arXiv, GitHub</b> · Nov 15 and 18</span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-nodes"/></svg>Agents</span>
+          </div>
+          <h3>A guard with no model in it decides where an agent's tool call may go, and a benchmark catches agents calling unfinished work done</h3>
+          <p>SPILLWAY admits a tool call only when its target, a recipient or an account, comes from the user's task or from a typed field a read-only tool returned. It is Apache 2.0 with an MCP proxy; the AgentDojo results are the authors' own, one run per cell, and the repo has five stars. SWE-CoWork: the two leading models pass about 63% of tests, finish under 8% of assignments, and "31% of requirements reported as completed fail their tests".</p>
+          <p class="forus"><b>For us:</b> the developer deep item. <code>pip install spillway-guard==1.0.1</code>, then run <code>mcp_proxy.py</code> in front of a non-production MCP server whose tools name an account or a recipient.</p>
+          <div class="src"><a href="https://arxiv.org/abs/2611.07222">SPILLWAY paper</a> · <a href="https://github.com/saintmachines/spillway">spillway repo</a> · <a href="https://arxiv.org/abs/2611.20218">SWE-CoWork paper</a></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="trend" aria-labelledby="trend-h">
+    <h2 id="trend-h"><svg class="si" aria-hidden="true"><use href="#i-trend"/></svg>The trend</h2>
+    <p class="claim">A critical bug now costs about $200 in tokens to find, so the week's releases moved the checks out of the model.</p>
+    <p>AI found remote-code flaws in nginx and the JDK, and attackers put a credential stealer into an agent framework's own package. The answers that shipped are all <span class="term">deterministic checks</span>: Claude Code refuses more when nobody can answer, Vercel stopped signing approvals for calls it had denied, and SPILLWAY checks a call's target with no model at all. SWE-CoWork gives the reason: a model's "done" is wrong about a third of the time. Meanwhile three frontier models sit within four index points at $4 to $27 a task. For our harness: checks at the tool that <span class="term">fail closed</span>, pinned dependencies, and a model layer we can swap.</p>
+  </section>
+
+  <section class="deep" id="vulns" aria-labelledby="vulns-h">
+    <div class="deep-head">
+      <span class="logo b-security lg" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>
+      <h2 id="vulns-h">Catch up: AI-found vulnerabilities</h2>
+    </div>
+    <span class="date">Java4Shell Nov 17 · nginx Nov 18</span>
+    <p><b>What it is.</b> Two critical flaws in software almost every stack runs, both found with AI tooling. Five teams found the nginx bugs independently; the Java bug had sat in a public issue since June.</p>
+    <p class="forus">Patch first. Then note what changed: the cost of finding such bugs fell for attackers and defenders alike.</p>
+    <ol class="reading">
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-flag"/></svg>Start here</span><a href="https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities">Wiz: two nginx HTTP/2 vulnerabilities</a><span class="why">Affected and fixed versions, the <code>http2 off;</code> workaround, and how Gemini 4 Carbon and GPT-5.6 Sol validated impact. Wiz built an exploit and is not releasing it. 8 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-terminal"/></svg>Try it</span><a href="https://calif.io/java4shell/">Calif: Java4Shell</a><span class="why">Check a host for the <code>avx512vbmi</code> CPU flag; until patched, start the JVM with <code>-XX:-UseBASE64Intrinsics</code>. Keycloak, Jenkins, Jira and Confluence were exploitable before login. 15 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-question"/></svg>The skeptic view</span><a href="https://news.ycombinator.com/item?id=50547374">Hacker News on the nginx bugs</a><span class="why">ActorNightly: "basically fear mongering that is going to be used to sell AI products". fduran: HTTP/2 "is not enabled by default in Nginx". 10 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-question"/></svg>The skeptic view</span><a href="https://ounapuu.ee/posts/2026/11/19/unsafeguards/">Herman Õunapuu on Claude's cyber safeguards</a><span class="why">The defender's side, one author's account: Claude Code stopped at a one-line security fix, the exemption programme wants a government ID, and he finished on GLM 5.3. 4 min.</span></li>
+    </ol>
+  </section>
+
+  <section class="deep" id="models" aria-labelledby="models-h">
+    <div class="deep-head">
+      <span class="logo b-openai lg" aria-hidden="true"><svg><use href="#openai"/></svg></span>
+      <h2 id="models-h">Catch up: GPT-6.2 and Gemini 4 Neon</h2>
+    </div>
+    <span class="date">GPT-6.2 Nov 17 · Neon Nov 18</span>
+    <p><b>What it is.</b> Two frontier launches in two days, both priced at or under Fable 5.2. The argument is whether benchmark gains show up in real work.</p>
+    <p class="forus">Read the API changes before the scores: GPT-6.2 changes how edited conversation prefixes are handled, as Fable 5.2 did.</p>
+    <ol class="reading">
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-flag"/></svg>Start here</span><a href="https://openai.com/index/introducing-gpt-6-2-astra-sol/">OpenAI: GPT-6.2 Astra and Sol</a><span class="why">Prices, cached input at $0.40, tighter cyber safeguards, and OpenAI's own benchmark claims against Fable 5.2. 8 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-terminal"/></svg>Try it</span><a href="https://developers.openai.com/api/docs/changelog">OpenAI API changelog</a><span class="why">"Tool calling requires the Responses API." Background runs with a two- or eight-hour window cost 30% or 40% less; new models get no Flex. 5 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-layers"/></svg>Go deeper</span><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/">Google: Gemini 4 Neon</a><span class="why">1M context, four thinking levels, and Google's claim of a 32% lower cost per task than Carbon. 7 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-layers"/></svg>Go deeper</span><a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis leaderboard</a><span class="why">The independent table: GPT-6.2 Sol scores 57 for $1.01 a task, Opus 5.5 scores 59 for $10.04. 5 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-question"/></svg>The skeptic view</span><a href="https://simonwillison.net/2026/Nov/17/gpt62-astra-and-sol/">Willison: GPT-6.2 Astra and Sol</a><span class="why">Reception is "mixed at the moment"; Theo Browne's two-hour task stopped to ask about a file name. 6 min.</span></li>
+      <li><span class="step"><svg class="si" aria-hidden="true"><use href="#i-question"/></svg>The skeptic view</span><a href="https://news.ycombinator.com/item?id=50535230">Hacker News on GPT-6.2</a><span class="why">agar, on finance output: "not something I'd be comfortable sending to institutional investors without a solid rewriting pass." 10 min.</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="more-h">
+    <h2 id="more-h">Also this week</h2>
+    <ul class="group">
+      <li>
+        <span class="logo b-claude" aria-hidden="true"><svg><use href="#claude"/></svg></span>
+        <span class="date">2026-11-17 to 11-20 · Update · Claude Code: MCP tokens off the command line, a narrower deny list, and the email issue still open</span>
+        <p>2.1.327 adds <code>claude mcp add-json &lt;name&gt; -</code>, which reads the server's JSON from stdin "so tokens can stay off the command line". 2.1.330: a <code>deniedMcpServers</code> name entry now hides only the named claude.ai connector; "to block them all, deny its exact URL". Issue #107757 is still open: a user reports on Nov 18 that 2.1.327 "still puts your account email in the model's context", with no Anthropic statement.</p>
+        <p class="forus"><b>For us:</b> switch setup scripts to the stdin form, and recheck any <code>deniedMcpServers</code> entry written by name.</p>
+        <div class="src"><a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a> · <a href="https://github.com/anthropics/claude-code/issues/107757">Issue #107757</a></div>
+      </li>
+      <li>
+        <span class="logo b-gemini" aria-hidden="true"><svg><use href="#gemini"/></svg></span>
+        <span class="date">2026-11-19 · Gemini API loads tool schemas on demand, remote MCP servers included (preview)</span>
+        <p>Mark a tool <code>defer_loading: true</code> and add a <code>{"type": "tool_search"}</code> tool; the Interactions API then searches the tool library and loads a schema only when needed. "Remote MCP servers support <code>defer_loading</code> as well." It works with Gemini 3.6 and later.</p>
+        <p class="forus"><b>For us:</b> the same deferred-loading idea Claude already has, so a large MCP catalogue can stay out of the context on both vendors.</p>
+        <div class="src"><a href="https://aistudio.google.com/docs/changelog">Gemini API changelog</a></div>
+      </li>
+      <li>
+        <span class="logo b-vercel" aria-hidden="true"><span class="mono-mark">V</span></span>
+        <span class="date">2026-11-20 · Vercel AI SDK 7.0.178 closes a replay hole in signed tool approvals</span>
+        <p>With <code>experimental_toolApprovalSecret</code> set, the SDK had signed the approval request of a call its policy denied automatically, so a client that controls the message history could return it approved and have it run. Such responses now fail with <code>AI_InvalidToolApprovalSignatureError</code>; old signatures stay valid until the secret is rotated.</p>
+        <p class="forus"><b>For us:</b> a test for any approval flow we build: replay a denied call with an approval attached and confirm it is refused.</p>
+        <div class="src"><a href="https://github.com/vercel/ai/releases/tag/ai@7.0.178">Vercel AI SDK 7.0.178</a></div>
+      </li>
+      <li>
+        <span class="logo b-copilot" aria-hidden="true"><svg><use href="#copilot"/></svg></span>
+        <span class="date">2026-11-16 and 11-17 · Copilot: secret scanning an agent can call, browser use, and an admin switch for where customizations come from</span>
+        <p>All three are previews or admin settings. Secret scanning on demand checks changes, not history, for more than 500 secret types: <code>/settings aiSecretDetection on</code>, then <code>/security-review</code>. Browser use works through a Chrome extension; the post says little about permissions. <code>strictPluginOnlyCustomization</code> blocks skills, custom agents, hooks and MCP servers that come from user and project sources.</p>
+        <p class="forus"><b>For us:</b> the admin switch is the pattern to cite when a client asks who decides which MCP servers an agent may load.</p>
+        <div class="src"><a href="https://github.blog/changelog/2026-11-17-secret-scanning-on-demand-for-developers-and-agents">GitHub: secret scanning</a> · <a href="https://github.blog/changelog/2026-11-17-let-github-copilot-interact-with-your-browser">Browser use</a> · <a href="https://github.blog/changelog/2026-11-16-control-where-github-copilot-customizations-come-from">Customization control</a></div>
+      </li>
+      <li>
+        <span class="logo b-tm" aria-hidden="true"><span class="mono-mark">T</span></span>
+        <span class="date">2026-11-20 · Update · Inkling 2 Mini: open weights that fit in about 20 GB</span>
+        <p>Apache 2.0, 26.4B parameters with 3.4B active, up to 1M context; it runs on a Mac with 32 GB through Ollama. Thinking Machines reports 79.2% on SWE-bench Verified, and its own card warns the model "may take destructive actions, such as deleting or overwriting files, without confirmation".</p>
+        <p class="forus"><b>For us:</b> a local model for low-stakes steps on sensitive data, inside a sandbox and with confirmation on anything destructive.</p>
+        <div class="src"><a href="https://thinkingmachines.ai/news/inkling-2-mini/">Thinking Machines: Inkling 2 Mini</a> · <a href="https://huggingface.co/thinkingmachines/Inkling-2-Mini">Model card</a></div>
+      </li>
+      <li>
+        <span class="logo b-anthropic" aria-hidden="true"><svg><use href="#anthropic"/></svg></span>
+        <span class="date">2026-11-17 and 11-20 · Claude agents solved two black-hole physics problems; an Anthropic researcher claims a Riemann Hypothesis proof</span>
+        <p>Anthropic: copies of Claude "ran in the background, with no special setup, for about six weeks"; the results were verified in Lean and a physicist "checked every main result". Separately, Levent Alpöge writes that he has, "working with Claude, discovered a proof of the Riemann Hypothesis". That is his claim; no independent check is cited.</p>
+        <p class="forus"><b>For us:</b> the method is the part to borrow: parallel agents, two independent answers that must agree, then a formal check.</p>
+        <div class="src"><a href="https://www.anthropic.com/research/claude-black-hole-physics">Anthropic: black hole physics</a> · <a href="https://simonwillison.net/2026/Nov/20/levent-alpoge/">Willison quoting Alpöge</a></div>
+      </li>
+    </ul>
+    <ul class="group">
+      <li>
+        <span class="logo b-security" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>
+        <span class="date">2026-11-17 · Security: Microsoft's agent-framework package carried a credential stealer on PyPI for about 45 minutes</span>
+        <p>Aikido: versions 1.26.1 and 1.26.2 went up at 20:35 and 21:08 UTC and were gone by about 21:20. A <code>.pth</code> file ran on every Python start, no import needed, and sent tokens, credential files and Azure identity tokens to a webhook.site address. The package has "about 190,000 downloads a month"; how the attacker could publish is not known. Update to W44: Cursor traced its tampered-extension incident to an access key it had issued to Fireworks (post of Nov 13).</p>
+        <p class="forus"><b>For us:</b> pin agent dependencies by hash. Anyone who installed either version rotates every secret that environment could reach.</p>
+        <div class="src"><a href="https://aikido.dev/blog/two-malicious-agent-framework-releases-hit-pypi-in-33-minutes">Aikido</a> · <a href="https://www.theregister.com/2026/11/18/microsoft_onnx_runtime_github/5310858">The Register (secondary)</a> · <a href="https://cursor.com/blog/security-incident-update">Cursor: incident update</a></div>
+      </li>
+      <li>
+        <span class="logo b-ms" aria-hidden="true"><span class="mono-mark">W</span></span>
+        <span class="date">2026-11-16 · Windows 11 diagnostics note which coding agents ran on a machine</span>
+        <p>One researcher's reverse engineering, not confirmed by Microsoft: <code>MissionControlAggregator.dll</code> records a bitmap of agents seen, among them <code>claude.exe</code>, <code>codex.exe</code>, <code>copilot.exe</code> and <code>cursor.exe</code>, and queues it for upload when optional diagnostic data is on. "I found no prompt text or source code in this report."</p>
+        <p class="forus"><b>For us:</b> turn off "Send optional diagnostic data" on developer machines that work on client code.</p>
+        <div class="src"><a href="https://xusheng.dev/posts/windows-coding-agent-telemetry/">xusheng.dev</a></div>
+      </li>
+    </ul>
+    <ul class="group">
+      <li>
+        <span class="logo b-mic" aria-hidden="true"><svg><use href="#i-mic"/></svg></span>
+        <span class="date">2026-11-18 and 11-19 · Listening and reading: Linear's COO on MCP and usage pricing, 84 min; curl's maintainer on agent-made Rust rewrites</span>
+        <p>Latent Space with Cristina Cordova: "Why being a database behind an MCP server isn't enough" at 20:00, "Moving from seats to usage-based pricing" at 50:06, "Trading the 2025 enterprise roadmap for agents" at 57:07. Topics from the page, not listened. Daniel Stenberg, quoted by Willison: agents turned 185,000 lines of curl's C into 340,000 lines of Rust, while curl itself merged "a little over 200 bugfixes" in about three weeks. "Will these clones keep up?"</p>
+        <p class="forus"><b>For us:</b> the MCP chapter is about how we position our own tools; Stenberg's numbers are the answer to "have the agent rewrite it".</p>
+        <div class="src"><a href="https://www.latent.space/p/linear-scaling/">Latent Space: Linear</a> · <a href="https://simonwillison.net/2026/Nov/18/daniel-stenberg/">Willison quoting Stenberg</a></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ahead" aria-labelledby="ahead-h">
+    <h2 id="ahead-h" style="margin:0">Coming up</h2>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Nov 30.</b> Claude Sonnet 4.5 retires on the Claude API; fast mode on Opus 4.8 is removed; Gemini 4 Carbon's introductory price ends. AWS re:Invent opens in Las Vegas, through Dec 4.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Dec 1.</b> Gemini 4 Carbon doubles to $4 and $20 (Willison's reading); <code>gemini-2.5-pro</code> and <code>gemini-2.5-flash</code> requests reroute.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Dec 2.</b> GitHub blocks <code>pull_request_target</code> by default on public repos.</span></p>
+    <p><span class="logo b-cal sm" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><span><b>Dec 14.</b> Copilot drops Claude Fable 5, Claude Haiku 4.5, Gemini 4 Argon and three others.</span></p>
+    <div class="src"><a href="https://platform.claude.com/docs/en/release-notes/overview">Claude release notes</a> · <a href="https://aistudio.google.com/docs/changelog">Gemini changelog</a> · <a href="https://simonwillison.net/2026/Nov/18/llm-gemini/">Willison on Gemini prices</a> · <a href="https://aws.amazon.com/events/reinvent">AWS re:Invent</a> · <a href="https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2">GitHub: pull_request_target</a> · <a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december">Copilot, Dec 14</a></div>
+  </section>
+
+  <details>
+    <summary>All sources this week</summary>
+    <ul>
+      <li><a href="https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities">Wiz: nginx HTTP/2</a></li>
+      <li><a href="https://calif.io/java4shell/">Calif: Java4Shell</a></li>
+      <li><a href="https://news.ycombinator.com/item?id=50547374">Hacker News (1,515 points)</a></li>
+      <li><a href="https://openai.com/index/introducing-gpt-6-2-astra-sol/">OpenAI: GPT-6.2 Astra and Sol</a></li>
+      <li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/">Google: Gemini 4 Neon</a></li>
+      <li><a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis</a></li>
+      <li><a href="https://latent.space/p/ainews-gpt-6-2-astra-the-2-frontier-model-is-better-and-20-600-cheaper-but-has-mixed-reviews-6-2-sol/">AINews (secondary)</a></li>
+      <li><a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></li>
+      <li><a href="https://www.anthropic.com/news/anthropic-prices-initial-public-offering">Anthropic: IPO pricing</a></li>
+      <li><a href="https://www.adn.com/business-economy/2026/11/19/anthropic-begins-trading-as-a-15-trillion-company-in-the-biggest-ipo-on-record/">AP via Anchorage Daily News</a></li>
+      <li><a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/">Nvidia: Q3 results</a></li>
+      <li><a href="https://arxiv.org/abs/2611.07222">SPILLWAY paper</a></li>
+      <li><a href="https://github.com/saintmachines/spillway">spillway repo</a></li>
+      <li><a href="https://arxiv.org/abs/2611.20218">SWE-CoWork paper</a></li>
+      <li><a href="https://ounapuu.ee/posts/2026/11/19/unsafeguards/">Herman Õunapuu on Claude's cyber safeguards</a></li>
+      <li><a href="https://developers.openai.com/api/docs/changelog">OpenAI API changelog</a></li>
+      <li><a href="https://simonwillison.net/2026/Nov/17/gpt62-astra-and-sol/">Willison: GPT-6.2 Astra and Sol</a></li>
+      <li><a href="https://news.ycombinator.com/item?id=50535230">Hacker News on GPT-6.2</a></li>
+      <li><a href="https://github.com/anthropics/claude-code/issues/107757">Issue #107757</a></li>
+      <li><a href="https://aistudio.google.com/docs/changelog">Gemini API changelog</a></li>
+      <li><a href="https://github.com/vercel/ai/releases/tag/ai@7.0.178">Vercel AI SDK 7.0.178</a></li>
+      <li><a href="https://github.blog/changelog/2026-11-17-secret-scanning-on-demand-for-developers-and-agents">GitHub: secret scanning</a></li>
+      <li><a href="https://github.blog/changelog/2026-11-17-let-github-copilot-interact-with-your-browser">Browser use</a></li>
+      <li><a href="https://github.blog/changelog/2026-11-16-control-where-github-copilot-customizations-come-from">Customization control</a></li>
+      <li><a href="https://thinkingmachines.ai/news/inkling-2-mini/">Thinking Machines: Inkling 2 Mini</a></li>
+      <li><a href="https://huggingface.co/thinkingmachines/Inkling-2-Mini">Model card</a></li>
+      <li><a href="https://www.anthropic.com/research/claude-black-hole-physics">Anthropic: black hole physics</a></li>
+      <li><a href="https://simonwillison.net/2026/Nov/20/levent-alpoge/">Willison quoting Alpöge</a></li>
+      <li><a href="https://aikido.dev/blog/two-malicious-agent-framework-releases-hit-pypi-in-33-minutes">Aikido</a></li>
+      <li><a href="https://www.theregister.com/2026/11/18/microsoft_onnx_runtime_github/5310858">The Register (secondary)</a></li>
+      <li><a href="https://cursor.com/blog/security-incident-update">Cursor: incident update</a></li>
+      <li><a href="https://xusheng.dev/posts/windows-coding-agent-telemetry/">xusheng.dev</a></li>
+      <li><a href="https://www.latent.space/p/linear-scaling/">Latent Space: Linear</a></li>
+      <li><a href="https://simonwillison.net/2026/Nov/18/daniel-stenberg/">Willison quoting Stenberg</a></li>
+      <li><a href="https://platform.claude.com/docs/en/release-notes/overview">Claude release notes</a></li>
+      <li><a href="https://simonwillison.net/2026/Nov/18/llm-gemini/">Willison on Gemini prices</a></li>
+      <li><a href="https://aws.amazon.com/events/reinvent">AWS re:Invent</a></li>
+      <li><a href="https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2">GitHub: pull_request_target</a></li>
+      <li><a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december">Copilot, Dec 14</a></li>
+    </ul>
+  </details>
+
+  <footer>
+    <p>Public sources only. Compiled by Hai Wang with Claude. Questions or a signal I missed: reply in the AI Labs chat. Logos are trademarks of their owners and mark the source of each item; brand icons from Simple Icons (CC0).</p>
+    <p><a href="../">All AI Weekly issues</a></p>
+  </footer>
+
+</div>
+</html>
